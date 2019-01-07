@@ -1,4 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from .models import AddSubject, EditSubject
+from .forms import AddSubjectForm, EditSubjectForm
+from django.http import HttpResponse, HttpResponseRedirect
 
 # Create your views here.
 def index(request):
@@ -6,7 +9,7 @@ def index(request):
 
 def addSubject(request):
     form = AddSubjectForm(request.POST or None)
-    regis = Addsubject.objects.all()
+    regis = AddSubject.objects.all()
     response = {
         "regis" : regis
     }

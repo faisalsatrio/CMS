@@ -1,45 +1,27 @@
-{% load static %}
+{% load static from staticfiles%}
 
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Edit Subject</title>
+  <title>CMS - Edit Topic</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
-  <!-- <link rel="stylesheet" href="static/bower_components/bootstrap/dist/css/bootstrap.min.css"> -->
   <link rel="stylesheet" type="text/css" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}">
   <!-- Font Awesome -->
-  <!-- <link rel="stylesheet" href="static/bower_components/font-awesome/css/font-awesome.min.css"> -->
   <link rel="stylesheet" type="text/css" href="{% static 'bower_components/font-awesome/css/font-awesome.min.css' %}">
   <!-- Ionicons -->
-  <!-- <link rel="stylesheet" href="static/bower_components/Ionicons/css/ionicons.min.css"> -->
   <link rel="stylesheet" type="text/css" href="{% static 'bower_components/Ionicons/css/ionicons.min.css' %}">
+  <!-- DataTables -->
+  <link rel="stylesheet" type="text/css" href="{% static 'bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css' %}">
   <!-- Theme style -->
-  <!-- <link rel="stylesheet" href="static/dist/css/AdminLTE.min.css"> -->
   <link rel="stylesheet" type="text/css" href="{% static 'dist/css/AdminLTE.css' %}">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
-  <!-- <link rel="stylesheet" href="static/dist/css/skins/_all-skins.min.css"> -->
   <link rel="stylesheet" type="text/css" href="{% static 'dist/css/skins/_all-skins.min.css' %}">
-  <!-- Morris chart -->
-  <!-- <link rel="stylesheet" href="static/bower_components/morris.js/morris.css"> -->
-  <link rel="stylesheet" type="text/css" href="{% static 'bower_components/morris.js/morris.css' %}">
-  <!-- jvectormap -->
-  <!-- <link rel="stylesheet" href="static/bower_components/jvectormap/jquery-jvectormap.css"> -->
-  <link rel="stylesheet" type="text/css" href="{% static 'bower_components/jvectormap/jquery-jvectormap.css' %}">
-  <!-- Date Picker -->
-  <!-- <link rel="stylesheet" href="static/bower_components/bootstrap-datepicker/static/css/bootstrap-datepicker.min.css"> -->
-  <link rel="stylesheet" type="text/css" href="{% static 'bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css' %}">
-  <!-- Daterange picker -->
-  <!-- <link rel="stylesheet" href="static/bower_components/bootstrap-daterangepicker/daterangepicker.css"> -->
-  <link rel="stylesheet" type="text/css" href="{% static 'bower_components/bootstrap-daterangepicker/daterangepicker.css' %}">
-  <!-- bootstrap wysihtml5 - text editor -->
-  <!-- <link rel="stylesheet" href="static/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css"> -->
-  <link rel="stylesheet" type="text/css" href="{% static 'plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css' %}">
- 
+
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -89,10 +71,6 @@
               </li>
             </ul>
           </li>
-          <!-- Control Sidebar Toggle Button -->
-          <li>
-            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-          </li>
         </ul>
       </div>
     </nav>
@@ -104,7 +82,7 @@
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="center image">
-          <img src="{% static 'dist/img/alif.jpg' %}"  class="img-circle" alt="User Image">
+          <img src="{% static 'dist/img/alif.jpg' %}" class="img-circle" alt="User Image">
         </div>
         <div class="info">
           <h3>Muhammad Alif Fauzan</h3>
@@ -113,32 +91,41 @@
       </div>
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
-        <li class="active treeview">
+        <li class="active">
+          <a href="/topic">
+            <i class="fa fa-info-circle"></i>
+            <span>Topic Management</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-down pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="active"><a href="#"><i class="fa fa-circle-o"></i> Edit Topic</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="/">
+            <i class="fa fa-comments"></i>
+            <span>Social Media Crawler</span>
+          </a>
+        </li>
+        <li>
           <a href="#">
-            <i class="fa fa-home"></i>
-            <span>Home</span>
+            <i class="fa fa-ticket"></i>
+            <span>Token Management</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="fa fa-newspaper-o"></i>
+            <span>Online News Crawler</span>
           </a>
         </li>
         <li>
           <a href="#">
             <i class="fa fa-users"></i>
-            <span>Lihat User</span>
+            <span>User Management</span>
           </a>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-check-square-o"></i>
-            <span>Twitter Crawler Management</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-circle-o"></i> Twitter Joblist</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Add Topic</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Add Subject</a></li>
-            
-          </ul>
         </li>
       </ul>
     </section>
@@ -149,30 +136,35 @@
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>Edit Subject</h1>
+      <h1>Edit Topic</h1>
     </section>
+
     <br>
+    <br></br>
+
     <!-- Main content -->
     <section class="content">
-      <br>
-      <br>
       <div class="container">
         <div class="row">
-            <div class="col-sm-12">
-                <form id="form" method="POST" action="">
-                    {% csrf_token %}
-                    {% for addsubject in form %}
-                    <div class="row">
-                        <div class="col-sm-12">
-                            {{ addsubject.label_tag }} <br> {{ addsubject }}
-                        </div>
-                    </div>
-                    {% endfor %}
-                    <br>
-                    <button type="submit" class="btn btn-success width">Update</button>
-                    <button type="submit" class="btn btn-success width">Deactivate</button>
-                </form>
-            </div>
+          <div class="col-sm-2"></div>
+          <div class="col-sm-8">
+            <form id="form" method="POST" action="">
+              {% csrf_token %}
+              {% for editTopic in form %}
+              <div>
+                {{ editTopic.label_tag }} </br> {{ editTopic }}
+              </div>
+              {% endfor %}
+              <br>
+              <div class="row">
+                <div class="col-sm-9"></div>
+                <div class="col-sm-3">
+                  <button type="submit" class="btn btn-danger">Deactivate</button>
+                  <button type="submit" class="btn btn-success pull-right">Update</button>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </section>
@@ -187,35 +179,21 @@
     reserved.
   </footer>
 
-  
+
 <!-- ./wrapper -->
 
+<!-- page script -->
 <!-- jQuery 3 -->
-<!-- <script src="bower_components/jquery/dist/jquery.min.js"></script> -->
 <script type="text/javascript" src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
 <!-- jQuery UI 1.11.4 -->
-<!-- <script src="bower_components/jquery-ui/jquery-ui.min.js"></script> -->
 <script type="text/javascript" src="{% static 'bower_components/jquery-ui/jquery-ui.min.js' %}"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>
   $.widget.bridge('uibutton', $.ui.button);
 </script>
 <!-- Bootstrap 3.3.7 -->
-<!-- <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script> -->
 <script type="text/javascript" src="{% static 'bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
-<!-- Sparkline -->
-<!-- <script src="bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script> -->
-<script type="text/javascript" src="{% static 'bower_components/jquery-sparkline/dist/jquery.sparkline.min.js' %}"></script>
-<!-- jvectormap -->
-<!-- <script src="plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script> -->
-<script type="text/javascript" src="{% static 'plugins/jvectormap/jquery-jvectormap-1.2.2.min.js' %}"></script>
-<!-- <script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script> -->
-<script type="text/javascript" src="{% static 'plugins/jvectormap/jquery-jvectormap-world-mill-en.js' %}"></script>
-<!-- jQuery Knob Chart -->
-<!-- <script src="bower_components/jquery-knob/dist/jquery.knob.min.js"></script> -->
-<script type="text/javascript" src="{% static 'plugins/jvectormap/jquery-jvectormap-world-mill-en.js' %}"></script>
 <!-- Bootstrap WYSIHTML5 -->
-<!-- <script src="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script> -->
 <script type="text/javascript" src="{% static 'plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js' %}"></script>
 <!-- Slimscroll -->
 <!-- <script src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script> -->
@@ -226,11 +204,5 @@
 <!-- AdminLTE App -->
 <!-- <script src="dist/js/adminlte.min.js"></script> -->
 <script type="text/javascript" src="{% static 'dist/js/adminlte.min.js' %}"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<!-- <script src="dist/js/pages/dashboard.js"></script> -->
-<script type="text/javascript" src="{% static 'dist/js/pages/dashboard.js' %}"></script>
-<!-- AdminLTE for demo purposes -->
-<!-- <script src="dist/js/demo.js"></script> -->
-<script type="text/javascript" src="{% static 'dist/js/demo.js' %}"></script>
 </body>
 </html>
