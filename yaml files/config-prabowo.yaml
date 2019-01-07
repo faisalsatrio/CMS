@@ -1,0 +1,11 @@
+apiVersion: v1
+data:
+  crawler-pilpres2019-prabowoyyyy: |
+    {
+      "project_topic": "pilpres20191111",
+      "subject": "prabowo",
+      "keywords": ["#2019gantipresiden", "prabowo", "sandiaga","koalisi indonesia adil makmur"]
+    }
+kind: ConfigMap
+metadata:
+  name: crawler-pilpres2019-prabowoyyyy

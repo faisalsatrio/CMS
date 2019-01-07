@@ -91,31 +91,31 @@
       </div>
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
-        <li class="active">
-          <a href="#">
+        <li>
+          <a href="{% url 'listTopic' %}">
             <i class="fa fa-info-circle"></i>
             <span>Topic Management</span>
           </a>
         </li>
         <li>
-          <a href="/">
+          <a href="{% url 'index' %}">
             <i class="fa fa-comments"></i>
             <span>Social Media Crawler</span>
           </a>
         </li>
         <li>
-          <a href="#">
+          <a href="{% url 'listToken' %}">
             <i class="fa fa-ticket"></i>
             <span>Token Management</span>
           </a>
         </li>
         <li>
-          <a href="#">
+          <a href="{% url 'listNews' %}">
             <i class="fa fa-newspaper-o"></i>
             <span>Online News Crawler</span>
           </a>
         </li>
-        <li>
+        <li class="active">
           <a href="#">
             <i class="fa fa-users"></i>
             <span>User Management</span>
@@ -146,26 +146,19 @@
           <table id="table1" class="table table-bordered table-striped table-hover">
             <thead>
             <tr>
-              <th>Topic Name</th>
-              <th>Client Name</th>
-              <th>Description</th>
+              <th>User Id</th>
+              <th>Username</th>
+              <th>Name</th>
+              <th>Status</th>
               <th>Action</th>
             </tr>
             </thead>
             <tbody>
             <tr>
-              <td>Pilpres 2019</td>
-              <td>PT aselole</td>
-              <td>topic mengenai pilpres presiden yang menjadi perbincangan hangat di Indonesia</td>
-              <td>
-                <a href="/user/edit"><div><i class="fa fa-pencil text-yellow"></i> edit</div></a>
-                <a href=#><i class="fa fa-ban text-red"></i> delete</a>
-              </td>
-            </tr>
-            <tr>
-              <td>Pil kb</td>
-              <td>kbbi</td>
-              <td>Berani kotor lebih baik</td>
+              <td>user12</td>
+              <td>alif</td>
+              <td>Muhammad Alif Fauzan</td>
+              <td>Acive</td>
               <td>
                 <a href="/user/edit"><div><i class="fa fa-pencil text-yellow"></i> edit</div></a>
                 <a href="" data-toggle="modal" data-target="#modal1"><i class="fa fa-ban text-red"></i> delete</a>
@@ -180,7 +173,7 @@
                         <h4 class="modal-title"><i class="fa fa-warning text-red"></i> Delete Topic</h4>
                       </div>
                       <div class="modal-body">
-                        <p>Are you sure want to delete Pil kb?</p>
+                        <p>Are you sure want to deactivate Muhammad Alif Fauzan?</p>
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>

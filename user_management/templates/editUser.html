@@ -92,7 +92,7 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li>
-          <a href="#">
+          <a href="{% url 'listTopic' %}">
             <i class="fa fa-info-circle"></i>
             <span>Topic Management</span>
 
@@ -100,25 +100,25 @@
 
         </li>
         <li>
-          <a href="/">
+          <a href="{% url 'index' %}">
             <i class="fa fa-comments"></i>
             <span>Social Media Crawler</span>
           </a>
         </li>
         <li>
-          <a href="#">
+          <a href="{% url 'listToken' %}">
             <i class="fa fa-ticket"></i>
             <span>Token Management</span>
           </a>
         </li>
         <li>
-          <a href="/news">
+          <a href="{% url 'listNews' %}">
             <i class="fa fa-newspaper-o"></i>
             <span>Online News Crawler</span>
           </a>
         </li>
         <li class="active">
-          <a href="/user">
+          <a href="{% url 'listUser' %}">
             <i class="fa fa-users"></i>
             <span>User Management</span>
             <span class="pull-right-container">
