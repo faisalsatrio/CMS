@@ -20,7 +20,7 @@ def addSubject(request):
         subject = request.POST.get("subject")
         keyword = request.POST.get("keyword")
         platform = request.POST.get("platform")
-        AddTopic.objects.create(topic=topic, subject=subject, keyword=keyword, platform=platform)
+        AddSubject.objects.create(topic=topic, subject=subject, keyword=keyword, platform=platform)
         return redirect('addSubject')
     else :
         return render(request, 'addSubject.html', response)
@@ -38,7 +38,7 @@ def editSubject(request):
         subject = request.POST.get("subject")
         keyword = request.POST.get("keyword")
         platform = request.POST.get("platform")
-        EditTopicSubject.objects.create(topic=topic, subject=subject, keyword=keyword, platform=platform)
+        EditSubject.objects.create(topic=topic, subject=subject, keyword=keyword, platform=platform)
         return redirect('editSubject')
     else :
         return render(request, 'editSubject.html', response)

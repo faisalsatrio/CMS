@@ -1,11 +1,11 @@
-{% load static from staticfiles%}
+{% load static from staticfiles %}
 
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>CMS - Edit Subject</title>
+  <title>CMS - Token Management</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -97,19 +97,13 @@
             <span>Topic Management</span>
           </a>
         </li>
-        <li class="active">
+        <li>
           <a href="/">
             <i class="fa fa-comments"></i>
             <span>Social Media Crawler</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-down pull-right"></i>
-            </span>
           </a>
-          <ul class="treeview-menu">
-            <li class="active"><a href="#"><i class="fa fa-circle-o"></i> Edit Subject</a></li>
-          </ul>
         </li>
-        <li>
+        <li class="active">
           <a href="#">
             <i class="fa fa-ticket"></i>
             <span>Token Management</span>
@@ -136,7 +130,7 @@
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>Edit Topic</h1>
+      <h1>TOKEN MANAGEMENT</h1>
     </section>
 
     <br>
@@ -144,29 +138,68 @@
 
     <!-- Main content -->
     <section class="content">
-      <div class="container">
-        <div class="row">
-          <div class="col-sm-2"></div>
-          <div class="col-sm-8">
-            <form id="form" method="POST" action="">
-              {% csrf_token %}
-              {% for editTopic in form %}
-              <div>
-                {{ editTopic.label_tag }} </br> {{ editTopic }}
-              </div>
-              {% endfor %}
-              <br>
-              <div class="row">
-                <div class="col-sm-9"></div>
-                <div class="col-sm-3">
-                  <button type="submit" class="btn btn-danger">Deactivate</button>
-                  <button type="submit" class="btn btn-success pull-right">Update</button>
+      <a href="/token/add"><button type="button" class="btn btn-success pull-right">Add Token</button></a>
+      <br>
+      <br></br>
+      <div class="box">
+        <div class="box-body">
+          <table id="table1" class="table table-bordered table-striped table-hover">
+            <thead>
+            <tr>
+              <th>Topic Name</th>
+              <th>Client Name</th>
+              <th>Description</th>
+              <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>Pilpres 2019</td>
+              <td>PT aselole</td>
+              <td>topic mengenai pilpres presiden yang menjadi perbincangan hangat di Indonesia</td>
+              <td>
+                <a href="/topic/edit"><div><i class="fa fa-pencil text-yellow"></i> edit</div></a>
+                <a href=#><i class="fa fa-ban text-red"></i> delete</a>
+              </td>
+            </tr>
+            <tr>
+              <td>Pil kb</td>
+              <td>kbbi</td>
+              <td>Berani kotor lebih baik</td>
+              <td>
+                <a href="/topic/edit"><div><i class="fa fa-pencil text-yellow"></i> edit</div></a>
+                <a href="" data-toggle="modal" data-target="#modal1"><i class="fa fa-ban text-red"></i> delete</a>
+
+                <!-- modal -->
+                <div class="modal fade" id="modal1">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title"><i class="fa fa-warning text-red"></i> Delete Topic</h4>
+                      </div>
+                      <div class="modal-body">
+                        <p>Are you sure want to delete Pil kb?</p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger">Delete</button>
+                      </div>
+                    </div>
+                    <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
                 </div>
-              </div>
-            </form>
-          </div>
+                <!-- /.modal -->
+              </td>
+            </tr>
+            </tbody>
+          </table>
         </div>
+        <!-- /.box-body -->
       </div>
+      <!-- /.box -->
     </section>
     <!-- /.content -->
   </div>
@@ -179,8 +212,12 @@
     reserved.
   </footer>
 
-
+  <!-- Add the sidebar's background. This div must be placed
+       immediately after the control sidebar -->
+  <div class="control-sidebar-bg"></div>
+</div>
 <!-- ./wrapper -->
+
 
 <!-- page script -->
 <!-- jQuery 3 -->
@@ -204,5 +241,20 @@
 <!-- AdminLTE App -->
 <!-- <script src="dist/js/adminlte.min.js"></script> -->
 <script type="text/javascript" src="{% static 'dist/js/adminlte.min.js' %}"></script>
+<!-- DataTables -->
+<script type="text/javascript" src="{% static 'bower_components/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
+<script>
+  $(function () {
+    $('#table1').DataTable({
+      'paging'      : true,
+      'lengthChange': true,
+      'searching'   : true,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : true
+    })
+  })
+</script>
 </body>
 </html>

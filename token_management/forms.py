@@ -1,6 +1,6 @@
 from django import forms
 
-class AddSubjectForm(forms.Form):
+class AddTokenForm(forms.Form):
     topic_attrs =(
         ('Pilpres 2019','Pilpres 2019'),
         ('Pil kb','Pil kb'),
@@ -25,7 +25,7 @@ class AddSubjectForm(forms.Form):
     platform = forms.ChoiceField(label='Platform:', required=True, choices=platform_attrs)
     token = forms.ChoiceField(label='Token:', choices=token_attrs)
 
-class EditSubjectForm(forms.Form):
+class EditTokenForm(forms.Form):
     topic_attrs =(
         ('Pilpres 2019','Pilpres 2019'),
         ('abc','abc'),

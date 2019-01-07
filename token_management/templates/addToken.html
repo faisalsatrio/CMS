@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>CMS - Edit Subject</title>
+  <title>CMS - Add Subject</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -106,7 +106,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="#"><i class="fa fa-circle-o"></i> Edit Subject</a></li>
+            <li class="active"><a href="#"><i class="fa fa-circle-o"></i> Add Subject</a></li>
           </ul>
         </li>
         <li>
@@ -136,7 +136,7 @@
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>Edit Topic</h1>
+      <h1>Add Subject</h1>
     </section>
 
     <br>
@@ -150,19 +150,13 @@
           <div class="col-sm-8">
             <form id="form" method="POST" action="">
               {% csrf_token %}
-              {% for editTopic in form %}
+              {% for addSubject in form %}
               <div>
-                {{ editTopic.label_tag }} </br> {{ editTopic }}
+                {{ addSubject.label_tag }} </br> {{ addSubject }}
               </div>
               {% endfor %}
               <br>
-              <div class="row">
-                <div class="col-sm-9"></div>
-                <div class="col-sm-3">
-                  <button type="submit" class="btn btn-danger">Deactivate</button>
-                  <button type="submit" class="btn btn-success pull-right">Update</button>
-                </div>
-              </div>
+              <button type="submit" class="btn btn-success pull-right">Save</button>
             </form>
           </div>
         </div>
