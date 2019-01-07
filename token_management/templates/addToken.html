@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>CMS - Add Subject</title>
+  <title>CMS - Add Token</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -92,28 +92,28 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li>
-          <a href="/topic">
+          <a href="{% url 'listTopic' %}">
             <i class="fa fa-info-circle"></i>
             <span>Topic Management</span>
           </a>
         </li>
-        <li class="active">
-          <a href="/">
+        <li>
+          <a href="{% url 'index' %}">
             <i class="fa fa-comments"></i>
             <span>Social Media Crawler</span>
+          </a>
+        </li>
+        <li  class="active">
+          <a href="{% url 'listToken' %}">
+            <i class="fa fa-ticket"></i>
+            <span>Token Management</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-down pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="#"><i class="fa fa-circle-o"></i> Add Subject</a></li>
+            <li class="active"><a href="#"><i class="fa fa-circle-o"></i> Add Token</a></li>
           </ul>
-        </li>
-        <li>
-          <a href="#">
-            <i class="fa fa-ticket"></i>
-            <span>Token Management</span>
-          </a>
         </li>
         <li>
           <a href="#">
@@ -136,7 +136,7 @@
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>Add Subject</h1>
+      <h1>Add Token</h1>
     </section>
 
     <br>
@@ -150,9 +150,9 @@
           <div class="col-sm-8">
             <form id="form" method="POST" action="">
               {% csrf_token %}
-              {% for addSubject in form %}
+              {% for addToken in form %}
               <div>
-                {{ addSubject.label_tag }} </br> {{ addSubject }}
+                {{ addToken.label_tag }} </br> {{ addToken }}
               </div>
               {% endfor %}
               <br>

@@ -20,8 +20,8 @@ def addTopic(request):
         topicName = request.POST.get("topicName")
         clientName = request.POST.get("clientName")
         description = request.POST.get("description")
-        AddTopic.objects.create(topic_name=topicName, client_name=clientName, description=description)
-        return redirect('addTopic')
+        AddTopic.objects.create(topicName=topicName, clientName=clientName, description=description)
+        return redirect('listTopic')	
     else :
         return render(request, 'addTopic.html', response)
 

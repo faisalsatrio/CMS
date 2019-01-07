@@ -92,31 +92,31 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li>
-          <a href="/topic">
+          <a href="{% url 'listTopic' %}">
             <i class="fa fa-info-circle"></i>
             <span>Topic Management</span>
           </a>
         </li>
         <li>
-          <a href="/">
+          <a href="{% url 'index' %}">
             <i class="fa fa-comments"></i>
             <span>Social Media Crawler</span>
           </a>
         </li>
-        <li class="active">
+        <li  class="active">
           <a href="#">
             <i class="fa fa-ticket"></i>
             <span>Token Management</span>
           </a>
         </li>
         <li>
-          <a href="#">
+          <a href="">
             <i class="fa fa-newspaper-o"></i>
             <span>Online News Crawler</span>
           </a>
         </li>
         <li>
-          <a href="#">
+        <a href="">
             <i class="fa fa-users"></i>
             <span>User Management</span>
           </a>
@@ -138,7 +138,7 @@
 
     <!-- Main content -->
     <section class="content">
-      <a href="/token/add"><button type="button" class="btn btn-success pull-right">Add Token</button></a>
+      <a href="{% url 'addToken' %}"><button type="button" class="btn btn-success pull-right">Add Token</button></a>
       <br>
       <br></br>
       <div class="box">
@@ -158,7 +158,7 @@
               <td>PT aselole</td>
               <td>topic mengenai pilpres presiden yang menjadi perbincangan hangat di Indonesia</td>
               <td>
-                <a href="/topic/edit"><div><i class="fa fa-pencil text-yellow"></i> edit</div></a>
+                <a href="{% url 'editToken' %}"><div><i class="fa fa-pencil text-yellow"></i> edit</div></a>
                 <a href=#><i class="fa fa-ban text-red"></i> delete</a>
               </td>
             </tr>
@@ -167,7 +167,7 @@
               <td>kbbi</td>
               <td>Berani kotor lebih baik</td>
               <td>
-                <a href="/topic/edit"><div><i class="fa fa-pencil text-yellow"></i> edit</div></a>
+                <a href="{% url 'editToken' %}"><div><i class="fa fa-pencil text-yellow"></i> edit</div></a>
                 <a href="" data-toggle="modal" data-target="#modal1"><i class="fa fa-ban text-red"></i> delete</a>
 
                 <!-- modal -->

@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>CMS - Edit Subject</title>
+  <title>CMS - Edit Token</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -92,28 +92,28 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li>
-          <a href="/topic">
+          <a href="{% url 'listTopic' %}">
             <i class="fa fa-info-circle"></i>
             <span>Topic Management</span>
           </a>
         </li>
-        <li class="active">
-          <a href="/">
+        <li>
+          <a href="{% url 'index' %}">
             <i class="fa fa-comments"></i>
             <span>Social Media Crawler</span>
+          </a>
+        </li>
+        <li  class="active">
+          <a href="{% url 'listToken' %}">
+            <i class="fa fa-ticket"></i>
+            <span>Token Management</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-down pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="#"><i class="fa fa-circle-o"></i> Edit Subject</a></li>
+            <li class="active"><a href="#"><i class="fa fa-circle-o"></i> Edit Token</a></li>
           </ul>
-        </li>
-        <li>
-          <a href="#">
-            <i class="fa fa-ticket"></i>
-            <span>Token Management</span>
-          </a>
         </li>
         <li>
           <a href="#">
@@ -136,7 +136,7 @@
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>Edit Topic</h1>
+      <h1>Edit Token</h1>
     </section>
 
     <br>
@@ -150,16 +150,39 @@
           <div class="col-sm-8">
             <form id="form" method="POST" action="">
               {% csrf_token %}
-              {% for editTopic in form %}
+              {% for editToken in form %}
               <div>
-                {{ editTopic.label_tag }} </br> {{ editTopic }}
+                {{ editToken.label_tag }} </br> {{ editToken }}
               </div>
               {% endfor %}
               <br>
               <div class="row">
                 <div class="col-sm-9"></div>
                 <div class="col-sm-3">
-                  <button type="submit" class="btn btn-danger">Deactivate</button>
+                  <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal1">Delete</button>
+                  <!-- modal -->
+                  <div class="modal fade" id="modal1">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+                          <h4 class="modal-title"><i class="fa fa-warning text-red"></i> Delete Topic</h4>
+                        </div>
+                        <div class="modal-body">
+                          <p>Are you sure want to delete Pil kb?</p>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                          <button type="button" class="btn btn-danger">Delete</button>
+                        </div>
+                      </div>
+                      <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                  </div>
+                  <!-- /.modal -->
+
                   <button type="submit" class="btn btn-success pull-right">Update</button>
                 </div>
               </div>
