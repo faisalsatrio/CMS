@@ -1,10 +1,7 @@
 from django.db import models
 
 # Create your models here.
-class TambahPengguna(models.Model):
-    topic = models.CharField(max_length=200) 
-
-class UbahPengguna(models.Model):
+class EditUser(models.Model):
     userid = models.CharField(max_length=30)
     username = models.CharField(max_length=40, unique=True)
     name = models.CharField(max_length=100)
