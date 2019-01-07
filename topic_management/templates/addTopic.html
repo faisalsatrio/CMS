@@ -1,11 +1,11 @@
-{% load static from staticfiles %}
+{% load static from staticfiles%}
 
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>CMS - SocMed Crawler Management</title>
+  <title>CMS - Add Topic</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -91,14 +91,20 @@
       </div>
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
-        <li>
-          <a href="topic">
+        <li class="active">
+          <a href="/topic">
             <i class="fa fa-info-circle"></i>
             <span>Topic Management</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-down pull-right"></i>
+            </span>
           </a>
+          <ul class="treeview-menu">
+            <li class="active"><a href="#"><i class="fa fa-circle-o"></i> Add Topic</a></li>
+          </ul>
         </li>
-        <li class="active">
-          <a href="#">
+        <li>
+          <a href="/">
             <i class="fa fa-comments"></i>
             <span>Social Media Crawler</span>
           </a>
@@ -130,7 +136,7 @@
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>SOCIAL MEDIA CRAWLER MANAGEMENT</h1>
+      <h1>Add Topic</h1>
     </section>
 
     <br>
@@ -138,57 +144,23 @@
 
     <!-- Main content -->
     <section class="content">
-      <button type="button" class="btn btn-success pull-right">Add Subject</button>
-      <br>
-      <br></br>
-      <div class="box">
-        <div class="box-body">
-          <table id="table1" class="table table-bordered table-striped table-hover">
-            <thead>
-            <tr>
-              <th>Topic Name</th>
-              <th>Subject Name</th>
-              <th>Keyword</th>
-              <th>Platform</th>
-              <th>Status</th>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Action</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              <td>Pilpres 2019</td>
-              <td>Jokiwow - Amien Rais</td>
-              <td>Jokiwow, Jokiwiw, Obama</td>
-              <td>Twitter</td>
-              <td><small class="label bg-green">active</small></td>
-              <td>2018-09-01</td>
-              <td>-</td>
-              <td>
-                <a href=#><div><i class="fa fa-pencil text-yellow"></i> edit</div></a>
-                <a href=#><i class="fa fa-ban text-red"></i> deactivate</a>
-              </td>
-            </tr>
-            <tr>
-              <td>Pilpres 2019</td>
-              <td>Jokiwow - Amien Rais</td>
-              <td>Jokiwow, Jokiwiw, aloha</td>
-              <td>Facebook</td>
-              <td><small class="label bg-red">inactive</small></td>
-              <td>2018-09-01</td>
-              <td>2018-09-10</td>
-              <td>
-                <a href=#><div><i class="fa fa-pencil text-yellow"></i> edit</div></a>
-                <a href=#><i class="fa fa-check text-green"></i> activate</a>
-              </td>
-            </tr>
-            </tbody>
-          </table>
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-2"></div>
+          <div class="col-sm-8">
+            <form id="form" method="POST" action="">
+              {% csrf_token %}
+              {% for addTopic in form %}
+              <div>
+                {{ addTopic.label_tag }} </br> {{ addTopic }}
+              </div>
+              {% endfor %}
+              <br>
+              <button type="submit" class="btn btn-success pull-right" style="color:white">Save</button>
+            </form>
+          </div>
         </div>
-        <!-- /.box-body -->
       </div>
-      <!-- /.box -->
     </section>
     <!-- /.content -->
   </div>
@@ -201,12 +173,8 @@
     reserved.
   </footer>
 
-  <!-- Add the sidebar's background. This div must be placed
-       immediately after the control sidebar -->
-  <div class="control-sidebar-bg"></div>
-</div>
-<!-- ./wrapper -->
 
+<!-- ./wrapper -->
 
 <!-- page script -->
 <!-- jQuery 3 -->
@@ -230,20 +198,5 @@
 <!-- AdminLTE App -->
 <!-- <script src="dist/js/adminlte.min.js"></script> -->
 <script type="text/javascript" src="{% static 'dist/js/adminlte.min.js' %}"></script>
-<!-- DataTables -->
-<script type="text/javascript" src="{% static 'bower_components/datatables.net/js/jquery.dataTables.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
-<script>
-  $(function () {
-    $('#table1').DataTable({
-      'paging'      : true,
-      'lengthChange': true,
-      'searching'   : true,
-      'ordering'    : true,
-      'info'        : true,
-      'autoWidth'   : true
-    })
-  })
-</script>
 </body>
 </html>

@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>CMS - SocMed Crawler Management</title>
+  <title>CMS - Topic Management</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -91,14 +91,14 @@
       </div>
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
-        <li>
-          <a href="topic">
+        <li class="active">
+          <a href="#">
             <i class="fa fa-info-circle"></i>
             <span>Topic Management</span>
           </a>
         </li>
-        <li class="active">
-          <a href="#">
+        <li>
+          <a href="/">
             <i class="fa fa-comments"></i>
             <span>Social Media Crawler</span>
           </a>
@@ -130,7 +130,7 @@
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>SOCIAL MEDIA CRAWLER MANAGEMENT</h1>
+      <h1>TOPIC MANAGEMENT</h1>
     </section>
 
     <br>
@@ -138,7 +138,7 @@
 
     <!-- Main content -->
     <section class="content">
-      <button type="button" class="btn btn-success pull-right">Add Subject</button>
+      <a href="/topic/add"><button type="button" class="btn btn-success pull-right">Add Topic</button></a>
       <br>
       <br></br>
       <div class="box">
@@ -147,40 +147,51 @@
             <thead>
             <tr>
               <th>Topic Name</th>
-              <th>Subject Name</th>
-              <th>Keyword</th>
-              <th>Platform</th>
-              <th>Status</th>
-              <th>Start Time</th>
-              <th>End Time</th>
+              <th>Client Name</th>
+              <th>Description</th>
               <th>Action</th>
             </tr>
             </thead>
             <tbody>
             <tr>
               <td>Pilpres 2019</td>
-              <td>Jokiwow - Amien Rais</td>
-              <td>Jokiwow, Jokiwiw, Obama</td>
-              <td>Twitter</td>
-              <td><small class="label bg-green">active</small></td>
-              <td>2018-09-01</td>
-              <td>-</td>
+              <td>PT aselole</td>
+              <td>topic mengenai pilpres presiden yang menjadi perbincangan hangat di Indonesia</td>
               <td>
-                <a href=#><div><i class="fa fa-pencil text-yellow"></i> edit</div></a>
-                <a href=#><i class="fa fa-ban text-red"></i> deactivate</a>
+                <a href="/topic/edit"><div><i class="fa fa-pencil text-yellow"></i> edit</div></a>
+                <a href=#><i class="fa fa-ban text-red"></i> delete</a>
               </td>
             </tr>
             <tr>
-              <td>Pilpres 2019</td>
-              <td>Jokiwow - Amien Rais</td>
-              <td>Jokiwow, Jokiwiw, aloha</td>
-              <td>Facebook</td>
-              <td><small class="label bg-red">inactive</small></td>
-              <td>2018-09-01</td>
-              <td>2018-09-10</td>
+              <td>Pil kb</td>
+              <td>kbbi</td>
+              <td>Berani kotor lebih baik</td>
               <td>
-                <a href=#><div><i class="fa fa-pencil text-yellow"></i> edit</div></a>
-                <a href=#><i class="fa fa-check text-green"></i> activate</a>
+                <a href="/topic/edit"><div><i class="fa fa-pencil text-yellow"></i> edit</div></a>
+                <a href="" data-toggle="modal" data-target="#modal-default"><i class="fa fa-ban text-red"></i> delete</a>
+
+                <!-- modal -->
+                <div class="modal fade" id="modal-default">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title"><i class="fa fa-warning text-red"></i> Delete Topic</h4>
+                      </div>
+                      <div class="modal-body">
+                        <p>Are you sure want to delete Pil kb?</p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger">Delete</button>
+                      </div>
+                    </div>
+                    <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
               </td>
             </tr>
             </tbody>

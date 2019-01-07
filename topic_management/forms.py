@@ -1,39 +1,11 @@
 from django import forms
 
-class SubjectForm(forms.Form):
-    topic_attrs =(
-        ('Pilpres 2019','Pilpres 2019'),
-        ('abc','abc'),
-        ('def','def'),
-    )
+class AddTopicForm(forms.Form):
+    topicName = forms.CharField(label='Topic:', required=True)
+    clientName = forms.CharField(label="Client:", required=True)
+    description = forms.CharField(label="Description:", required=True)
 
-    platform_attrs =(
-        ('Twitter','Twitter'),
-        ('abc','abc'),
-        ('def','def'),
-    )
-
-    topic = forms.ChoiceField(label='Topic:', required=True, choices=topic_attrs)
-    subject = forms.CharField(label="Subject:")
-    keyword = forms.CharField(label="Keyword:")
-    platform = forms.ChoiceField(label='Platform:', required=True, choices=platform_attrs)
-
-class EditForm(forms.Form):
-    topic_attrs =(
-        ('Pilpres 2019','Pilpres 2019'),
-        ('abc','abc'),
-        ('def','def'),
-    )
-
-    platform_attrs =(
-        ('Twitter','Twitter'),
-        ('abc','abc'),
-        ('def','def'),
-    )
-
-    topic = forms.ChoiceField(label='Topic:', required=True, choices=topic_attrs)
-    subject = forms.CharField(label="Subject:")
-    keyword = forms.CharField(label="Keyword:")
-    platform = forms.ChoiceField(label='Platform:', required=True, choices=platform_attrs)
-
-
+class EditTopicForm(forms.Form):
+    topicName = forms.CharField(label='Topic:', required=True)
+    clientName = forms.CharField(label="Client:", required=True)
+    description = forms.CharField(label="Description:", required=True)

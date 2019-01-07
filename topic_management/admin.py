@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import AddSubject, EditSubject
+from .models import AddTopic, EditTopic
 
 # Register your models here.
-admin.site.register(AddSubject)
-admin.site.register(EditSubject)
+admin.site.register(AddTopic)
+admin.site.register(EditTopic)
