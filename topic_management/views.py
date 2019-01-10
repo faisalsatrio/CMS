@@ -1,7 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Topic
 from .forms import TopicForm
 from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib import messages
 
 # Create your views here.
 
@@ -13,37 +14,32 @@ def listTopic(request):
 	return render(request, 'listTopic.html', response)
 
 def addTopic(request):
-    form = TopicForm(request.POST or None)
-
-    response = {}
-    response['form'] = form
-
-    if(request.method == "POST" and form.is_valid()):
+    if(request.method == "POST"):
         topicName = request.POST.get("topicName")
         clientName = request.POST.get("clientName")
         description = request.POST.get("description")
         Topic.objects.create(topic_name=topicName, client_name=clientName, description=description)
         return redirect('listTopic')
     else :
-        return render(request, 'addTopic.html', response)
+        return render(request, 'addTopic.html')
 
-def editTopic(request):
-    form = EditTopicForm(request.POST or None)
-    regis = EditTopic.objects.all()
+def editTopic(request, id):
+    topic = get_object_or_404(Topic, id=id)
+
     response = {
-        "regis" : regis
-    }
-    response['form'] = form
+		'topic' : topic
+	}
 
-    if(request.method == "POST" and form.is_valid()):
+    if(request.method == "POST"):
         topicName = request.POST.get("topicName")
         clientName = request.POST.get("clientName")
         description = request.POST.get("description")
-        EditTopic.objects.create(topic_name=topicName, client_name=clientName, description=description)
-        return redirect('editTopic')
+        Topic.objects.filter(id=id).update(topic_name=topicName, client_name=clientName, description=description)
+        return redirect('listTopic')
     else :
         return render(request, 'editTopic.html', response)
 
 def deleteTopic(request, id):
-	Topic.objects.get(id=id).delete()
+	topic = get_object_or_404(Topic, id=id)
+	topic.delete()
 	return redirect('listTopic')

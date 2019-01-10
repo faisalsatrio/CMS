@@ -159,16 +159,16 @@
             </tr>
             </thead>
             <tbody>
-            {% for i in context %}
+            {% for topic in context %}
             <tr>
-              <td>{{ i.topic_name }}</td>
-              <td>{{ i.client_name }}</td>
-              <td>{{ i.description }}</td>
+              <td>{{ topic.topic_name }}</td>
+              <td>{{ topic.client_name }}</td>
+              <td>{{ topic.description }}</td>
               <td>
-                <a href="/topic/edit"><div><i class="fa fa-pencil text-yellow"></i> edit</div></a>
-                <a href="" data-toggle="modal" data-target="#modal{{ i.id }}"><i class="fa fa-ban text-red"></i> delete</a>
+                <a href="{% url 'editTopic' id=topic.id  %}"><div><i class="fa fa-pencil text-yellow"></i> edit</div></a>
+                <a href="" data-toggle="modal" data-target="#modal{{ topic.id }}"><i class="fa fa-ban text-red"></i> delete</a>
                 <!-- modal -->
-                <div class="modal fade" id="modal{{ i.id }}">
+                <div class="modal fade" id="modal{{ topic.id }}">
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -177,11 +177,11 @@
                           <h4 class="modal-title"><i class="fa fa-warning text-red"></i> Delete Topic</h4>
                         </div>
                         <div class="modal-body">
-                          <p>Are you sure want to delete topic "{{ i.topic_name }}"? All of the following related items will be deleted.</p>
+                          <p>Are you sure want to delete topic "{{ topic.topic_name }}"? All of the following related items will be deleted.</p>
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
-                          <a href="{% url 'deleteTopic' id=i.id %}"><button type="submit" class="btn btn-danger">Delete</button></a>
+                          <a href="{% url 'deleteTopic' id=topic.id %}"><button type="submit" class="btn btn-danger">Delete</button></a>
                         </div>
                       </div>
                       <!-- /.modal-content -->
