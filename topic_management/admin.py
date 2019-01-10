@@ -1,6 +1,5 @@
 from django.contrib import admin
-from .models import AddTopic, EditTopic
+from .models import Topic
 
 # Register your models here.
-admin.site.register(AddTopic)
-admin.site.register(EditTopic)
+admin.site.register(Topic)

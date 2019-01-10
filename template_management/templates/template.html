@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>CMS - News Crawler</title>
+  <title>CMS - Template Management</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -109,16 +109,22 @@
             <span>Token Management</span>
           </a>
         </li>
-        <li  class="active">
-          <a href="#">
+        <li>
+          <a href="{% url 'listNews' %}">
             <i class="fa fa-newspaper-o"></i>
             <span>Online News Crawler</span>
           </a>
         </li>
         <li>
-          <a href="{% url 'listUser' %}">
+        <a href="{% url 'listUser' %}">
             <i class="fa fa-users"></i>
             <span>User Management</span>
+          </a>
+        </li>
+        <li class="active">
+        <a href="#">
+            <i class="fa fa-file-code-o"></i>
+            <span>Template Management</span>
           </a>
         </li>
       </ul>
@@ -130,7 +136,7 @@
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>NEWS CRAWLER</h1>
+      <h1>TEMPLATE MANAGEMENT</h1>
     </section>
 
     <br>
@@ -138,7 +144,6 @@
 
     <!-- Main content -->
     <section class="content">
-      <a href="/news/add"><button type="button" class="btn btn-success pull-right">Add News</button></a>
       <br>
       <br></br>
       <div class="box">
@@ -146,45 +151,58 @@
           <table id="table1" class="table table-bordered table-striped table-hover">
             <thead>
             <tr>
-              <th>Crawler Name</th>
-              <th>Site</th>
-              <th>Start Date</th>
-              <th>Catch Up</th>
-              <th>Action</th>
+              <th>Platform</th>
+              <th>Config Template File</th>
+              <th>Upload Date</th>
+              <th>Config Action</th>
+              <th>Deployment Template File</th>
+              <th>Upload Date</th>
+              <th>Deployment Action</th>
             </tr>
             </thead>
             <tbody>
             <tr>
-              <td>Kompas Crawler</td>
-              <td>www.kompas.com</td>
-              <td>2019-01-01</td>
-              <td>-</td>
+              <td>Twitter</td>
+              <td><a>crawler-config.yaml</a></td>
+              <td>2018-12-2</td>
               <td>
-                <a href="/news/edit"><div><i class="fa fa-pencil text-yellow"></i> edit</div></a>
-                <a href="" data-toggle="modal" data-target="#modal1"><i class="fa fa-ban text-red"></i> delete</a>
-
-                <!-- modal -->
-                <div class="modal fade" id="modal1">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title"><i class="fa fa-warning text-red"></i> Delete Topic</h4>
-                      </div>
-                      <div class="modal-body">
-                        <p>Are you sure want to delete Kompas Crawler?</p>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-danger">Delete</button>
-                      </div>
-                    </div>
-                    <!-- /.modal-content -->
-                  </div>
-                  <!-- /.modal-dialog -->
-                </div>
-                <!-- /.modal -->
+                <form method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <input type="file" name="document">
+                  <button type="submit" class="btn btn-success pull-right">Save</button>
+                  <!-- <a type="submit" data-toggle="modal" data-target="#modal1"><i class="fa fa-upload"></i> upload</a> -->
+                </form>
+              </td>
+              <td><a>deployment.yaml</a></td>
+              <td>2018-12-2</td>
+              <td>
+                <a href="" data-toggle="modal" data-target="#modal1"><i class="fa fa-upload"></i> upload</a>
+              </td>
+            </tr>
+            <tr>
+              <td>Facebook</td>
+              <td><a>crawler-config.yaml</a></td>
+              <td>2018-12-2</td>
+              <td>
+                <a href="" data-toggle="modal" data-target="#modal1"><i class="fa fa-upload"></i> upload</a>
+              </td>
+              <td><a>deployment.yaml</a></td>
+              <td>2018-12-2</td>
+              <td>
+                <a href="" data-toggle="modal" data-target="#modal1"><i class="fa fa-upload"></i> upload</a>
+              </td>
+            </tr>
+            <tr>
+              <td>Instagram</td>
+              <td><a>crawler-config.yaml</a></td>
+              <td>2018-12-2</td>
+              <td>
+                <a href="" data-toggle="modal" data-target="#modal1"><i class="fa fa-upload"></i> upload</a>
+              </td>
+              <td><a>deployment.yaml</a></td>
+              <td>2018-12-2</td>
+              <td>
+                <a href="" data-toggle="modal" data-target="#modal1"><i class="fa fa-upload"></i> upload</a>
               </td>
             </tr>
             </tbody>

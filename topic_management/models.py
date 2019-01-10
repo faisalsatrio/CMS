@@ -1,12 +1,9 @@
 from django.db import models
 
 # Create your models here.
-class AddTopic(models.Model):
-    topicName = models.CharField(max_length=100)
-    clientName = models.CharField(max_length=100)
+class Topic(models.Model):
+    topic_name = models.CharField(max_length=100)
+    client_name = models.CharField(max_length=100)
     description = models.CharField(max_length=100)
-
-class EditTopic(models.Model):
-    topicName = models.CharField(max_length=100)
-    clientName = models.CharField(max_length=100)
-    description = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
