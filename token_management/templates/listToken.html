@@ -82,7 +82,7 @@
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="center image">
-          <img src="{% static 'dist/img/alif.jpg' %}" class="img-circle" alt="User Image">
+          <img src="{% static 'dist/img/user.png' %}" class="img-circle" alt="User Image">
         </div>
         <div class="info">
           <h3>Muhammad Alif Fauzan</h3>
@@ -121,6 +121,12 @@
             <span>User Management</span>
           </a>
         </li>
+        <li>
+        <a href="{% url 'template' %}">
+            <i class="fa fa-file-code-o"></i>
+            <span>Template Management</span>
+          </a>
+        </li>
       </ul>
     </section>
     <!-- /.sidebar -->
@@ -156,32 +162,33 @@
             </tr>
             </thead>
             <tbody>
+            {% for token in context %}
             <tr>
-              <td>token1</td>
-              <td>arawk3yga3wb3wg73r</td>
-              <td>kebrgvs47rvb3w98y3</td>
-              <td>iuesvh34yhwa8nrawq</td>
-              <td>anlriva3br9tyb49ws</td>
-              <td><a>1</a></td>
+              <td>{{ token.token_name }}</td>
+              <td>{{ token.consumer_key }}</td>
+              <td>{{ token.consumer_secret }}</td>
+              <td>{{ token.access_key }}</td>
+              <td>{{ token.access_secret }}</td>
+              <td>-</td>
               <td>
-                <a href="{% url 'editToken' %}"><div><i class="fa fa-pencil text-yellow"></i> edit</div></a>
-                <a href="" data-toggle="modal" data-target="#modal1"><i class="fa fa-ban text-red"></i> delete</a>
+                <a href="{% url 'editToken' id=token.id %}"><div><i class="fa fa-pencil text-yellow"></i> edit</div></a>
+                <a href="" data-toggle="modal" data-target="#modal{{ token.id }}"><i class="fa fa-ban text-red"></i> delete</a>
 
                 <!-- modal -->
-                <div class="modal fade" id="modal1">
+                <div class="modal fade" id="modal{{ token.id }}">
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title"><i class="fa fa-warning text-red"></i> Delete Topic</h4>
+                        <h4 class="modal-title"><i class="fa fa-warning text-red"></i> Delete Token</h4>
                       </div>
                       <div class="modal-body">
-                        <p>Are you sure want to delete token1?</p>
+                        <p>Are you sure want to delete token "{{ token.token_name }}"? All of the following related items will be deleted.</p>
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-danger">Delete</button>
+                        <a href="{% url 'deleteToken' id=token.id %}"><button type="submit" class="btn btn-danger">Delete</button></a>
                       </div>
                     </div>
                     <!-- /.modal-content -->
@@ -191,6 +198,7 @@
                 <!-- /.modal -->
               </td>
             </tr>
+            {% endfor %}
             </tbody>
           </table>
         </div>

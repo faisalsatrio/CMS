@@ -1,46 +1,46 @@
-from django.shortcuts import render, redirect
-from .models import AddToken, EditToken
-from .forms import AddTokenForm, EditTokenForm
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Token
 from django.http import HttpResponse, HttpResponseRedirect
 
 # Create your views here.
 def listToken(request):
-	return render(request, 'listToken.html')
+	context = Token.objects.all()
+	response = {
+        "context" : context
+    }
+	return render(request, 'listToken.html', response)
 
 def addToken(request):
-    form = AddTokenForm(request.POST or None)
-    regis = AddToken.objects.all()
-    response = {
-        "regis" : regis
-    }
-    response['form'] = form
-
-    if(request.method == "POST" and form.is_valid()):
+    if(request.method == "POST"):
 	    tokenName = request.POST.get("tokenName")
 	    consumerKey = request.POST.get("consumerKey")
 	    consumerSecret = request.POST.get("consumerSecret")
 	    accessKey = request.POST.get("accessKey")
 	    accessSecret = request.POST.get("accessSecret")
-	    AddToken.objects.create(token_name=tokenName, consumer_key=consumerKey, consumer_secret=consumerSecret, access_key=accessKey, access_secret=accessSecret)
-	    return redirect('addToken')
+	    Token.objects.create(token_name=tokenName, consumer_key=consumerKey, consumer_secret=consumerSecret, access_key=accessKey, access_secret=accessSecret)
+	    return redirect('listToken')
     else :
-        return render(request, 'addToken.html', response)
+        return render(request, 'addToken.html')
 
-def editToken(request):
-    form = EditTokenForm(request.POST or None)
-    regis = EditToken.objects.all()
+def editToken(request, id):
+    token = get_object_or_404(Token, id=id)
+
     response = {
-        "regis" : regis
-    }
-    response['form'] = form
+		'token' : token
+	}
 
-    if(request.method == "POST" and form.is_valid()):
+    if(request.method == "POST"):
         tokenName = request.POST.get("tokenName")
         consumerKey = request.POST.get("consumerKey")
         consumerSecret = request.POST.get("consumerSecret")
         accessKey = request.POST.get("accessKey")
         accessSecret = request.POST.get("accessSecret")
-        EditToken.objects.create(token_name=tokenName, consumer_key=consumerKey, consumer_secret=consumerSecret, access_key=accessKey, access_secret=accessSecret)
-        return redirect('editToken')
+        Token.objects.filter(id=id).update(token_name=tokenName, consumer_key=consumerKey, consumer_secret=consumerSecret, access_key=accessKey, access_secret=accessSecret)
+        return redirect('listToken')
     else :
         return render(request, 'editToken.html', response)
+
+def deleteToken(request, id):
+	token = get_object_or_404(Token, id=id)
+	token.delete()
+	return redirect('listToken')

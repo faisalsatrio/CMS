@@ -82,7 +82,7 @@
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="center image">
-          <img src="{% static 'dist/img/alif.jpg' %}" class="img-circle" alt="User Image">
+          <img src="{% static 'dist/img/user.png' %}" class="img-circle" alt="User Image">
         </div>
         <div class="info">
           <h3>Muhammad Alif Fauzan</h3>
@@ -127,6 +127,12 @@
             <span>User Management</span>
           </a>
         </li>
+        <li>
+        <a href="{% url 'template' %}">
+            <i class="fa fa-file-code-o"></i>
+            <span>Template Management</span>
+          </a>
+        </li>
       </ul>
     </section>
     <!-- /.sidebar -->
@@ -148,33 +154,33 @@
         <div class="row">
           <div class="col-sm-2"></div>
           <div class="col-sm-8">
-            <form id="form" method="POST" action="">
+            <form method="POST">
               {% csrf_token %}
-              {% for editToken in form %}
-              <div>
-                {{ editToken.label_tag }} </br> {{ editToken }}
-              </div>
-              {% endfor %}
+              <label>Token Name:</label> </br> <input type="text" class="form-control" name="tokenName" placeholder="token name" value="{{  token.token_name }}" required>
+              <label>Consumer Key:</label> </br> <input type="text" class="form-control" name="consumerKey" placeholder="consumer key" value="{{  token.consumer_key }}" required>
+              <label>Consumer Secret:</label> </br> <input type="text" class="form-control" name="consumerSecret" placeholder="consumer secret" value="{{  token.consumer_secret }}" required>
+              <label>Access Key:</label> </br> <input type="text" class="form-control" name="accessKey" placeholder="access key" value="{{  token.access_key }}" required>
+              <label>Access Secret:</label> </br> <input type="text" class="form-control" name="accessSecret" placeholder="access secret" value="{{  token.access_secret }}" required>
               <br>
               <div class="row">
                 <div class="col-sm-9"></div>
                 <div class="col-sm-3">
-                  <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal1">Delete</button>
+                  <a href="" data-toggle="modal" data-target="#modal{{ token.id }}"><button type="button" class="btn btn-danger">Delete</button></a>
                   <!-- modal -->
-                  <div class="modal fade" id="modal1">
+                  <div class="modal fade" id="modal{{ token.id }}">
                     <div class="modal-dialog">
                       <div class="modal-content">
                         <div class="modal-header">
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span></button>
-                          <h4 class="modal-title"><i class="fa fa-warning text-red"></i> Delete Topic</h4>
+                          <h4 class="modal-title"><i class="fa fa-warning text-red"></i> Delete Token</h4>
                         </div>
                         <div class="modal-body">
-                          <p>Are you sure want to delete Pil kb?</p>
+                          <p>Are you sure want to delete token "{{ token.token_name }}"? All of the following related items will be deleted.</p>
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
-                          <button type="button" class="btn btn-danger">Delete</button>
+                          <a href="{% url 'deleteToken' id=token.id %}"><button type="submit" class="btn btn-danger">Delete</button></a>
                         </div>
                       </div>
                       <!-- /.modal-content -->

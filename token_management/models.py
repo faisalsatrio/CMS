@@ -1,16 +1,11 @@
 from django.db import models
 
 # Create your models here.
-class AddToken(models.Model):
-    tokenName = models.CharField(max_length=100)
-    consumerKey = models.CharField(max_length=100)
-    consumerSecret = models.CharField(max_length=100)
-    accessKey = models.CharField(max_length=100)
-    accessSecret = models.CharField(max_length=100)
-
-class EditToken(models.Model):
-    tokenName = models.CharField(max_length=100)
-    consumerKey = models.CharField(max_length=100)
-    consumerSecret = models.CharField(max_length=100)
-    accessKey = models.CharField(max_length=100)
-    accessSecret = models.CharField(max_length=100)
+class Token(models.Model):
+    token_name = models.CharField(max_length=100)
+    consumer_key = models.CharField(max_length=100)
+    consumer_secret = models.CharField(max_length=100)
+    access_key = models.CharField(max_length=100)
+    access_secret = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
