@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from .forms import UploadConfigForm
 from django.core.files.storage import FileSystemStorage
+from django.core.files import File
+from django.conf import settings
 
 # Create your views here.
 def template(request):
@@ -18,8 +20,18 @@ def template(request):
 
         # tes = handle_uploaded_file(request.FILES['document'])
         tes = request.FILES['document']
-        print(tes.name)
-        print(tes.size)
         fs = FileSystemStorage()
-        fs.save(tes.name, tes)
+        name = fs.save(tes.name, tes)
+
+        sumber = File(open(fs.path(name), 'r'))
+        pro = "protest"
+        sub = "subtest"
+        with open(settings.YAML_ROOT+pro+'-'+sub+'.yaml', 'w') as f:
+            myfile = File(f)
+            for line in sumber:
+                if '{{ name }}' in line:
+                    myfile.write(line.replace('{{ name }}', pro+'-'+sub+'.yaml'))
+                else:
+                    myfile.write(line)
+        sumber.close()
     return render(request, 'template.html')

@@ -128,7 +128,7 @@
           </a>
         </li>
         <li>
-        <a href="{% url 'template' %}">
+          <a href="{% url 'template' %}">
             <i class="fa fa-file-code-o"></i>
             <span>Template Management</span>
           </a>
@@ -157,7 +157,7 @@
             <form method="POST">
               {% csrf_token %}
               <label>Topic Name:</label> </br> <input type="text" class="form-control" name="topicName" placeholder="topic name" value="{{  topic.topic_name }}" required>
-              <label>Client Name:</label> </br> <input type="text" class="form-control" name="clientName" placeholder="client name"value="{{  topic.client_name }}" required>
+              <label>Client Name:</label> </br> <input type="text" class="form-control" name="clientName" placeholder="client name" value="{{  topic.client_name }}" required>
               <label>Description:</label> </br> <textarea class="form-control" row="3" name="description" placeholder="topic name" required>{{ topic.description }}</textarea>
               <br>
               <button type="submit" class="btn btn-success pull-right">Update</button>

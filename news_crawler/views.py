@@ -1,43 +1,45 @@
-from django.shortcuts import render, redirect
-from .models import AddNews, EditNews
-from .forms import AddNewsForm, EditNewsForm
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import News
 from django.http import HttpResponse, HttpResponseRedirect
 
 # Create your views here.
 
 def listNews(request):
-	return render(request, 'listNews.html')
+	context = News.objects.all()
+	response = {
+        "context" : context
+    }
+	return render(request, 'listNews.html', response)
 
 def addNews(request):
-    form = AddNewsForm(request.POST or None)
-    regis = AddNews.objects.all()
-    response = {
-        "regis" : regis
-    }
-    response['form'] = form
-
-    if(request.method == "POST" and form.is_valid()):
+    if(request.method == "POST"):
         crawlerName = request.POST.get("crawlerName")
         site = request.POST.get("site")
         startDate = request.POST.get("startDate")
-        AddNews.objects.create(crawlerName=crawlerName, site=site, startDate=startDate)
+        catchUp = request.POST.get("catchUp")
+        News.objects.create(crawler_name=crawlerName, site=site, start_date=startDate, catch_up=catchUp)
         return redirect('listNews')
     else :
-        return render(request, 'addNews.html', response)
+        return render(request, 'addNews.html')
 
-def editNews(request):
-    form = EditNewsForm(request.POST or None)
-    regis = EditNews.objects.all()
+def editNews(request, id):
+    news = get_object_or_404(News, id=id)
+
     response = {
-        "regis" : regis
+        "news" : news
     }
-    response['form'] = form
 
-    if(request.method == "POST" and form.is_valid()):
+    if(request.method == "POST"):
         crawlerName = request.POST.get("crawlerName")
         site = request.POST.get("site")
         startDate = request.POST.get("startDate")
-        EditNews.objects.create(crawlerName=crawlerName, site=site, startDate=startDate)
+        catchUp = request.POST.get("catchUp")
+        News.objects.filter(id=id).update(crawler_name=crawlerName, site=site, start_date=startDate, catch_up=catchUp)
         return redirect('listNews')
     else :
         return render(request, 'editNews.html', response)
+
+def deleteNews(request, id):
+	news = get_object_or_404(News, id=id)
+	news.delete()
+	return redirect('listNews')

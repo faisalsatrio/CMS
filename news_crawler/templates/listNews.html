@@ -82,7 +82,7 @@
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="center image">
-          <img src="{% static 'dist/img/alif.jpg' %}" class="img-circle" alt="User Image">
+          <img src="{% static 'dist/img/user.png' %}" class="img-circle" alt="User Image">
         </div>
         <div class="info">
           <h3>Muhammad Alif Fauzan</h3>
@@ -121,6 +121,12 @@
             <span>User Management</span>
           </a>
         </li>
+        <li>
+          <a href="{% url 'template' %}">
+            <i class="fa fa-file-code-o"></i>
+            <span>Template Management</span>
+          </a>
+        </li>
       </ul>
     </section>
     <!-- /.sidebar -->
@@ -138,7 +144,7 @@
 
     <!-- Main content -->
     <section class="content">
-      <a href="/news/add"><button type="button" class="btn btn-success pull-right">Add News</button></a>
+      <a href="{% url 'addNews' %}"><button type="button" class="btn btn-success pull-right">Add News</button></a>
       <br>
       <br></br>
       <div class="box">
@@ -154,39 +160,40 @@
             </tr>
             </thead>
             <tbody>
+            {% for news in context %}
             <tr>
-              <td>Kompas Crawler</td>
-              <td>www.kompas.com</td>
-              <td>2019-01-01</td>
-              <td>-</td>
+              <td>{{ news.crawler_name }}</td>
+              <td>{{ news.site }}</td>
+              <td>{{ news.start_date }}</td>
+              <td>{{ news.catch_up }}</td>
               <td>
-                <a href="/news/edit"><div><i class="fa fa-pencil text-yellow"></i> edit</div></a>
-                <a href="" data-toggle="modal" data-target="#modal1"><i class="fa fa-ban text-red"></i> delete</a>
-
+                <a href="{% url 'editNews' id=news.id %}"><div><i class="fa fa-pencil text-yellow"></i> edit</div></a>
+                <a href="" data-toggle="modal" data-target="#modal{{ news.id }}"><i class="fa fa-ban text-red"></i> delete</a>
                 <!-- modal -->
-                <div class="modal fade" id="modal1">
+                <div class="modal fade" id="modal{{ news.id }}">
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title"><i class="fa fa-warning text-red"></i> Delete Topic</h4>
+                          <h4 class="modal-title"><i class="fa fa-warning text-red"></i> Delete News</h4>
+                        </div>
+                        <div class="modal-body">
+                          <p>Are you sure want to delete news "{{ news.crawler_name }}"? All of the following related items will be deleted.</p>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                          <a href="{% url 'deleteNews' id=news.id %}"><button type="submit" class="btn btn-danger">Delete</button></a>
+                        </div>
                       </div>
-                      <div class="modal-body">
-                        <p>Are you sure want to delete Kompas Crawler?</p>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-danger">Delete</button>
-                      </div>
+                      <!-- /.modal-content -->
                     </div>
-                    <!-- /.modal-content -->
+                    <!-- /.modal-dialog -->
                   </div>
-                  <!-- /.modal-dialog -->
-                </div>
-                <!-- /.modal -->
+                  <!-- /.modal -->
               </td>
             </tr>
+            {% endfor %}
             </tbody>
           </table>
         </div>

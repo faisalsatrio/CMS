@@ -129,6 +129,7 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'yaml files')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'yaml files/templates')
+YAML_ROOT = os.path.join(BASE_DIR, 'yaml files/')
 
 MEDIA_URL = '/yaml/'

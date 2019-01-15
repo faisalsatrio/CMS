@@ -122,7 +122,7 @@
           </a>
         </li>
         <li>
-        <a href="{% url 'template' %}">
+          <a href="{% url 'template' %}">
             <i class="fa fa-file-code-o"></i>
             <span>Template Management</span>
           </a>
@@ -144,7 +144,7 @@
 
     <!-- Main content -->
     <section class="content">
-      <a href="/topic/add"><button type="button" class="btn btn-success pull-right">Add Topic</button></a>
+      <a href="{% url 'addTopic' %}"><button type="button" class="btn btn-success pull-right">Add Topic</button></a>
       <br>
       <br></br>
       <div class="box">
@@ -165,7 +165,7 @@
               <td>{{ topic.client_name }}</td>
               <td>{{ topic.description }}</td>
               <td>
-                <a href="{% url 'editTopic' id=topic.id  %}"><div><i class="fa fa-pencil text-yellow"></i> edit</div></a>
+                <a href="{% url 'editTopic' id=topic.id %}"><div><i class="fa fa-pencil text-yellow"></i> edit</div></a>
                 <a href="" data-toggle="modal" data-target="#modal{{ topic.id }}"><i class="fa fa-ban text-red"></i> delete</a>
                 <!-- modal -->
                 <div class="modal fade" id="modal{{ topic.id }}">

@@ -21,6 +21,8 @@
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" type="text/css" href="{% static 'dist/css/skins/_all-skins.min.css' %}">
+  <!-- Datetime picker -->
+  <link rel="stylesheet" type="text/css" href="{% static 'bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css' %}">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -82,7 +84,7 @@
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="center image">
-          <img src="{% static 'dist/img/alif.jpg' %}" class="img-circle" alt="User Image">
+          <img src="{% static 'dist/img/user.png' %}" class="img-circle" alt="User Image">
         </div>
         <div class="info">
           <h3>Muhammad Alif Fauzan</h3>
@@ -129,6 +131,12 @@
             <span>User Management</span>
           </a>
         </li>
+        <li>
+          <a href="{% url 'template' %}">
+            <i class="fa fa-file-code-o"></i>
+            <span>Template Management</span>
+          </a>
+        </li>
       </ul>
     </section>
     <!-- /.sidebar -->
@@ -150,13 +158,12 @@
         <div class="row">
           <div class="col-sm-2"></div>
           <div class="col-sm-8">
-            <form id="form" method="POST" action="">
+            <form method="POST">
               {% csrf_token %}
-              {% for editNews in form %}
-              <div>
-                {{ editNews.label_tag }} </br> {{ editNews }}
-              </div>
-              {% endfor %}
+              <label>Crawler Name:</label> </br> <input type="text" class="form-control" name="crawlerName" placeholder="crawler name" value="{{  news.crawler_name }}" required>
+              <label>Site:</label> </br> <input type="text" class="form-control" name="site" placeholder="site" value="{{  news.site }}" required>
+              <label>Start Date:</label> </br> <input type="text" class="form-control" name="startDate" placeholder="YYYY-MM-DD HH:mm" value="{{  news.start_date }}" id="datetimepicker" required>
+              <label>Catch Up:</label> </br> <input type="text" class="form-control" name="catchUp" placeholder="catch up" value="{{  news.catch_up }}" required>
               <br>
               <button type="submit" class="btn btn-success pull-right">Update</button>
             </form>
@@ -200,5 +207,14 @@
 <!-- AdminLTE App -->
 <!-- <script src="dist/js/adminlte.min.js"></script> -->
 <script type="text/javascript" src="{% static 'dist/js/adminlte.min.js' %}"></script>
+<!-- Datetime picker -->
+<script type="text/javascript" src="{% static 'bower_components/moment/min/moment.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js' %}"></script>
+<script>
+  $(function () {
+    //Date range picker with time picker
+    $('#datetimepicker').datetimepicker({ format:'YYYY-MM-DD HH:MM' })
+  })
+</script>
 </body>
 </html>
