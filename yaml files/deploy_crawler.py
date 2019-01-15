@@ -11,12 +11,12 @@ def main():
     # default location.
     config.load_kube_config()
 
-    with open(path.join(path.dirname(__file__), "deployment_prabowo.yaml")) as f:
+    with open(path.join(path.dirname(__file__), "crawler-twitter-tes-subject.yaml")) as f:
         dep = yaml.load(f)
         k8s_beta = client.ExtensionsV1beta1Api()
-        resp = k8s_beta.create_namespaced_deployment(
-            body=dep, namespace="staging")
-		#resp = k8s_beta.delete_namespaced_deployment(name={name di deployment}, namespace="staging")
+        # resp = k8s_beta.create_namespaced_deployment(
+            # body=dep, namespace="staging")
+        resp = k8s_beta.delete_namespaced_deployment(name="crawler-twitter-tes-subject", namespace="staging")
         print("Deployment created. status='%s'" % str(resp.status))
 
 

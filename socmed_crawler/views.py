@@ -3,6 +3,7 @@ from .models import Subject
 from topic_management.models import Topic
 from template_management.models import Platform
 from token_management.models import Token
+from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.core.files import File
 from django.http import HttpResponse, HttpResponseRedirect
@@ -38,15 +39,15 @@ def addSubject(request):
 		startTime = timezone.now()
 		endTime = None
 		token = None
-		if platform.platform_name == 'Twitter':
+		if platform.platform_name == 'twitter':
 			token = Token.objects.get(token_name=request.POST.get("token"))
 		configYaml = None
 		deployYaml = None
 
-		name = platform.platform_name+'_'+topic.topic_name+'_'+subject
+		name = platform.platform_name+'-'+topic.topic_name+'-'+subject
 		fs = FileSystemStorage()
 		configTemplate = File(open(fs.path(platform.config_template_name), 'r'))
-		fileName = fs.save('config_'+name+'.yaml', configTemplate)
+		fileName = fs.save('config-'+name+'.yaml', configTemplate)
 		configYamlName = fileName
 		with fs.open(fileName, 'w') as f:
 			configYaml = File(f)
@@ -64,14 +65,14 @@ def addSubject(request):
 		configTemplate.close()
 
 		deployTemplate = File(open(fs.path(platform.deploy_template_name), 'r'))
-		fileName = fs.save('deployment_'+name+'.yaml', deployTemplate)
+		fileName = fs.save('crawler-'+name+'.yaml', deployTemplate)
 		with fs.open(fileName, 'w') as f:
 			deployYaml = File(f)
 			for line in deployTemplate:
 				if '{{ name }}' in line:
 					deployYaml.write(line.replace('{{ name }}', name))
 				elif '{{ config_name }}' in line:
-					deployYaml.write(line.replace('{{ config_name }}', 'config_'+name))
+					deployYaml.write(line.replace('{{ config_name }}', 'config-'+name))
 				else:
 					deployYaml.write(line)
 		deployTemplate.close()
@@ -79,7 +80,8 @@ def addSubject(request):
 		configYamlUrl = fs.url(configYaml.name)
 		deployYamlName = fileName
 		deployYamlUrl = fs.url(deployYaml.name)
-		Subject.objects.create(topic=topic, subject=subject, keyword=keyword, platform=platform, status=status, start_time=startTime, end_time=endTime, config_yaml_name=configYamlName, config_yaml_url=configYamlUrl, deploy_yaml_name=deployYamlName, deploy_yaml_url=deployYamlUrl, token=token)
+		subjectWithId = Subject.objects.create(topic=topic, subject=subject, keyword=keyword, platform=platform, status=status, start_time=startTime, config_yaml_name=configYamlName, config_yaml_url=configYamlUrl, deploy_yaml_name=deployYamlName, deploy_yaml_url=deployYamlUrl, token=token)
+		activateSubject(request, subjectWithId.id)
 		return redirect('index')
 	else :
 		return render(request, 'addSubject.html', response)
@@ -106,17 +108,17 @@ def editSubject(request, id):
 		startTime = timezone.now()
 		endTime = None
 		token = None
-		if platform.platform_name == 'Twitter':
+		if platform.platform_name == 'twitter':
 			token = Token.objects.get(token_name=request.POST.get("token"))
 		configYaml = None
 		deployYaml = None
 
-		name = platform.platform_name+'_'+topic.topic_name+'_'+subject
+		name = platform.platform_name+'-'+topic.topic_name+'-'+subject
 		fs = FileSystemStorage()
 		if subjectWithId.config_yaml_name is not "":
 			fs.delete(subjectWithId.config_yaml_name)
 		configTemplate = File(open(fs.path(platform.config_template_name), 'r'))
-		fileName = fs.save('config_'+name+'.yaml', configTemplate)
+		fileName = fs.save('config-'+name+'.yaml', configTemplate)
 		configYamlName = fileName
 		with fs.open(fileName, 'w') as f:
 			configYaml = File(f)
@@ -136,14 +138,14 @@ def editSubject(request, id):
 		if subjectWithId.deploy_yaml_name is not "":
 			fs.delete(subjectWithId.deploy_yaml_name)
 		deployTemplate = File(open(fs.path(platform.deploy_template_name), 'r'))
-		fileName = fs.save('deployment_'+name+'.yaml', deployTemplate)
+		fileName = fs.save('crawler-'+name+'.yaml', deployTemplate)
 		with fs.open(fileName, 'w') as f:
 			deployYaml = File(f)
 			for line in deployTemplate:
 				if '{{ name }}' in line:
 					deployYaml.write(line.replace('{{ name }}', name))
 				elif '{{ config_name }}' in line:
-					deployYaml.write(line.replace('{{ config_name }}', 'config_'+name))
+					deployYaml.write(line.replace('{{ config_name }}', 'config-'+name))
 				else:
 					deployYaml.write(line)
 		deployTemplate.close()
@@ -162,6 +164,8 @@ def activateSubject(request, id):
     startTime = timezone.now()
     endTime = None
     Subject.objects.filter(id=subject.id).update(status=status, start_time=startTime, end_time=endTime)
+    deployConfig(request, id)
+    deployCrawler(request, id)
     return redirect('index')
 
 def deactivateSubject(request, id):
@@ -169,40 +173,50 @@ def deactivateSubject(request, id):
 	status = 'inactive'
 	endTime = timezone.now()
 	Subject.objects.filter(id=subject.id).update(status=status, end_time=endTime)
+	deleteCrawler(request, id)
+	deleteConfig(requst, id)
 	return redirect('index')
 
-def deployConfig(request, name):
-    config.load_kube_config()
+def deployConfig(request, id):
+	subject = Subject.objects.get(id=id)
+	config.load_kube_config()
 
-    with open(path.join(path.dirname(__file__), 'config_'+name+'.yaml')) as f:
-        dep = yaml.load(f)
-        k8s_beta = client.CoreV1Api()
-        resp = k8s_beta.create_namespaced_config_map(body=dep, namespace="staging")
-        print("Config created. status='%s'" % str(resp))
+	with open(path.join(settings.MEDIA_ROOT, "config-"+subject.platform.platform_name+"-"+subject.topic.topic_name+"-"+subject.subject+".yaml")) as f:
+		dep = yaml.load(f)
+		k8s_beta = client.CoreV1Api()
+		resp = k8s_beta.create_namespaced_config_map(body=dep, namespace="staging")
+		print("Config created. status='%s'" % str(resp))
+	return redirect('activateSubject', id)
 
-def deleteConfig(request, name):
-    config.load_kube_config()
+def deleteConfig(request, id):
+	subject = Subject.objects.get(id=id)
+	config.load_kube_config()
 
-    with open(path.join(path.dirname(__file__), 'config_'+name+'.yaml')) as f:
-        dep = yaml.load(f)
-        k8s_beta = client.CoreV1Api()
-        resp = k8s_beta.delete_namespaced_config_map(name=name, namespace="staging")
-        print("Config deleted. status='%s'" % str(resp))
+	with open(path.join(settings.MEDIA_ROOT, "config-"+subject.platform.platform_name+"-"+subject.topic.topic_name+"-"+subject.subject+".yaml")) as f:
+		dep = yaml.load(f)
+		k8s_beta = client.CoreV1Api()
+		resp = k8s_beta.delete_namespaced_config_map(name="config-"+subject.platform.platform_name+"-"+subject.topic.topic_name+"-"+subject.subject, namespace="staging")
+		print("Config deleted. status='%s'" % str(resp))
+	return redirect('deactivateSubject', id)
 
-def deployCrawler(request, name):
-    config.load_kube_config()
+def deployCrawler(request, id):
+	subject = Subject.objects.get(id=id)
+	config.load_kube_config()
 
-    with open(path.join(path.dirname(__file__), 'deployment_'+name+'.yaml')) as f:
-        dep = yaml.load(f)
-        k8s_beta = client.ExtensionsV1beta1Api()
-        resp = k8s_beta.create_namespaced_deployment(body=dep, namespace="staging")
-        print("Deployment created. status='%s'" % str(resp.status))
+	with open(path.join(settings.MEDIA_ROOT, "crawler-"+subject.platform.platform_name+"-"+subject.topic.topic_name+"-"+subject.subject+".yaml")) as f:
+		dep = yaml.load(f)
+		k8s_beta = client.ExtensionsV1beta1Api()
+		resp = k8s_beta.create_namespaced_deployment(body=dep, namespace="staging")
+		print("Deployment created. status='%s'" % str(resp.status))
+	return redirect('activateSubject', id)
 
-def deleteCrawler(request, name):
-    config.load_kube_config()
+def deleteCrawler(request, id):
+	subject = Subject.objects.get(id=id)
+	config.load_kube_config()
 
-    with open(path.join(path.dirname(__file__), "deployment_prabowo.yaml")) as f:
-        dep = yaml.load(f)
-        k8s_beta = client.ExtensionsV1beta1Api()
-        resp = k8s_beta.delete_namespaced_deployment(name=name, namespace="staging")
-        print("Deployment created. status='%s'" % str(resp.status))
+	with open(path.join(settings.MEDIA_ROOT, "crawler-"+subject.platform.platform_name+"-"+subject.topic.topic_name+"-"+subject.subject+".yaml")) as f:
+		dep = yaml.load(f)
+		k8s_beta = client.ExtensionsV1beta1Api()
+		resp = k8s_beta.delete_namespaced_deployment(name="crawler-"+subject.platform.platform_name+"-"+subject.topic.topic_name+"-"+subject.subject, namespace="staging", body=dep)
+		print("Deployment created. status='%s'" % str(resp.status))
+	return redirect('deactivateSubject', id)
