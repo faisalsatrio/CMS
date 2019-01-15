@@ -1,0 +1,11 @@
+apiVersion: v1
+data:
+  config-Twitter_tes_subject: |
+    {
+      "project_topic": "tes",
+      "subject": "subject",
+      "keywords": [""keyword1","keyword2","keyword3","keyword4""]
+    }
+kind: ConfigMap
+metadata:
+  name: config-Twitter_tes_subject

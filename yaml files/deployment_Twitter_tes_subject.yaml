@@ -1,13 +1,13 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: crawler-{{name}}
+  name: crawler-Twitter_tes_subject
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: crawler-{{name}}
+        app: crawler-Twitter_tes_subject
     spec:
       containers:
         - name: tweet-crawler
@@ -57,7 +57,7 @@ spec:
               path: sa.json
         - name: config-volume
           configMap:
-            name: {{config_name}}
+            name: config_Twitter_tes_subject
             items:
-            - key: {{config_name}}
+            - key: config_Twitter_tes_subject
               path: input.json

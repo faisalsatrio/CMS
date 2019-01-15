@@ -1,0 +1,11 @@
+apiVersion: v1
+data:
+  config-Twitter_topic_adrian_Permohonan Transfer Domain: |
+    {
+      "project_topic": "topic_adrian",
+      "subject": "Permohonan Transfer Domain",
+      "keywords": [""keyword1","keyword2","keyword3""]
+    }
+kind: ConfigMap
+metadata:
+  name: config-Twitter_topic_adrian_Permohonan Transfer Domain

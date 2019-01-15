@@ -153,9 +153,10 @@
             <thead>
             <tr>
               <th>Topic</th>
-              <th>Subjec</th>
+              <th>Subject</th>
               <th>Keyword</th>
               <th>Platform</th>
+              <th>Token</th>
               <th>Status</th>
               <th>Start Time</th>
               <th>End Time</th>
@@ -166,10 +167,11 @@
             <tbody>
             {% for subject in context %}
             <tr>
-              <td>{{ subject.topic }}</td>
+              <td>{{ subject.topic.topic_name }}</td>
               <td>{{ subject.subject }}</td>
               <td>{{ subject.keyword }}</td>
-              <td>{{ subject.platform }}</td>
+              <td>{{ subject.platform.platform_name }}</td>
+              <td>{{ subject.token.token_name }}</td>
               {% if subject.status == "active" %}
                 <td><small class="label bg-green">active</small></td>
               {% else %}
@@ -177,7 +179,7 @@
               {% endif %}
               <td>{{ subject.start_time }}</td>
               <td>{{ subject.end_time }}</td>
-              <td>{{ subject.config_yaml.name }} {{ subject.deploy_yaml.name }}</td>
+              <td><a href="{{ subject.config_yaml_url }}">{{ subject.config_yaml_name }}</a><br><a href="{{ subject.deploy_yaml_url }}">{{ subject.deploy_yaml_name }}</a></td>
               <td>
                 <a href="{% url 'editSubject' id=subject.id %}"><div><i class="fa fa-pencil text-yellow"></i> edit</div></a>
                 {% if subject.status == "active" %}
@@ -196,7 +198,7 @@
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
-                          <a href="{% url 'deactivateUser' id=user.id %}"><button type="submit" class="btn btn-danger">deactivate</button></a>
+                          <a href="{% url 'deactivateSubject' id=subject.id %}"><button type="submit" class="btn btn-danger">deactivate</button></a>
                         </div>
                       </div>
                       <!-- /.modal-content -->
@@ -220,7 +222,7 @@
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
-                          <a href="{% url 'activateUser' id=user.id %}"><button type="submit" class="btn btn-success">Activate</button></a>
+                          <a href="{% url 'activateSubject' id=subject.id %}"><button type="submit" class="btn btn-success">Activate</button></a>
                         </div>
                       </div>
                       <!-- /.modal-content -->

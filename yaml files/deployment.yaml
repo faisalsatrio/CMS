@@ -1,0 +1,63 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: crawler-{{ name }}
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: crawler-{{ name }}
+    spec:
+      containers:
+        - name: tweet-crawler
+          image: gcr.io/exalted-bonus-197703/tweet-crawler:staging-3
+          command: ["python"]
+          args: ["crawler.py"]
+          env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: "/etc/cred/sa.json"
+            - name: INPUT_FILE
+              value: "/etc/crawler/input.json"
+            - name: GOOGLE_CLOUD_PROJECT
+              value: exalted-bonus-197703
+            - name: TWITTER_CONSUMER_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: tweet-crawler-cred
+                  key: TWITTER_CONSUMER_KEY
+            - name: TWITTER_CONSUMER_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: tweet-crawler-cred
+                  key: TWITTER_CONSUMER_SECRET
+            - name: TWITTER_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: tweet-crawler-cred
+                  key: TWITTER_ACCESS_KEY
+            - name: TWITTER_ACCESS_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: tweet-crawler-cred
+                  key: TWITTER_ACCESS_SECRET
+          volumeMounts:
+            - name: tweet-saver-sa
+              mountPath: "/etc/cred/"
+              readOnly: true
+            - name: config-volume
+              mountPath: "/etc/crawler/"
+              readOnly: true
+      volumes:
+        - name: tweet-saver-sa
+          secret:
+            secretName: tweet-saver-sa
+            items:
+            - key: exalted-bonus-197703-152b30f246b5.json
+              path: sa.json
+        - name: config-volume
+          configMap:
+            name: {{ config_name }}
+            items:
+            - key: {{ config_name }}
+              path: input.json

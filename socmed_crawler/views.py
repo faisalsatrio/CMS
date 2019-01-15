@@ -20,54 +20,54 @@ def index(request):
 	return render(request, 'index.html', response)
 
 def addSubject(request):
-	topic = Topic.objects.all()
-	platform = Platform.objects.all()
-	token = Token.objects.all()
+	topicAll = Topic.objects.all()
+	platformAll = Platform.objects.all()
+	tokenAll = Token.objects.all()
 	response = {
-		"topic" : topic,
-		"platform" : platform,
-		"token" : token
+		"topic" : topicAll,
+		"platform" : platformAll,
+		"token" : tokenAll
     }
 
 	if(request.method == "POST"):
-		topic = request.POST.get("topic")
+		topic = Topic.objects.get(topic_name=request.POST.get("topic"))
 		subject = request.POST.get("subject")
 		keyword = request.POST.get("keyword")
-		platform = request.POST.get("platform")
+		platform = Platform.objects.get(platform_name=request.POST.get("platform"))
 		status = 'active'
 		startTime = timezone.now()
 		endTime = None
 		token = None
-		if platform == 'Twitter':
-			token = request.POST.get("platform")
+		if platform.platform_name == 'Twitter':
+			token = Token.objects.get(token_name=request.POST.get("token"))
 		configYaml = None
 		deployYaml = None
 
-		name = platform+'_'+topic+'_'+subject
-		if fs.exist('config_'+name+'.yaml'):
-			fs.delete('config_'+name+'.yaml')
-		configTemplate = File(Platform.objects.get(platform_name=platform).config_template)
-		with open(settings.YAML_ROOT+'config_'+name+'.yaml', 'w') as f:
+		name = platform.platform_name+'_'+topic.topic_name+'_'+subject
+		fs = FileSystemStorage()
+		configTemplate = File(open(fs.path(platform.config_template_name), 'r'))
+		fileName = fs.save('config_'+name+'.yaml', configTemplate)
+		configYamlName = fileName
+		with fs.open(fileName, 'w') as f:
 			configYaml = File(f)
-			for line in sumber:
+			for line in configTemplate:
 				if '{{ name }}' in line:
 					configYaml.write(line.replace('{{ name }}', name))
 				elif '{{ project }}' in line:
-					configYaml.write(line.replace('{{ project }}', topic))
+					configYaml.write(line.replace('{{ project }}', topic.topic_name))
 				elif '{{ subject }}' in line:
 					configYaml.write(line.replace('{{ subject }}', subject))
 				elif '{{ keywords }}' in line:
-					configYaml.write(line.replace('{{ keywords }}', keywords))
+					configYaml.write(line.replace('{{ keywords }}', keyword))
 				else:
 					configYaml.write(line)
 		configTemplate.close()
 
-		if fs.exist('deployment_'+name+'.yaml'):
-			fs.delete('deployment_'+name+'.yaml')
-		deployTemplate = File(Platform.objects.get(platform_name=platform).deploy_template)
-		with open(settings.YAML_ROOT+'deployment_'+name+'.yaml', 'w') as f:
+		deployTemplate = File(open(fs.path(platform.deploy_template_name), 'r'))
+		fileName = fs.save('deployment_'+name+'.yaml', deployTemplate)
+		with fs.open(fileName, 'w') as f:
 			deployYaml = File(f)
-			for line in sumber:
+			for line in deployTemplate:
 				if '{{ name }}' in line:
 					deployYaml.write(line.replace('{{ name }}', name))
 				elif '{{ config_name }}' in line:
@@ -76,62 +76,70 @@ def addSubject(request):
 					deployYaml.write(line)
 		deployTemplate.close()
 
-		Subject.objects.create(topic=topic, subject=subject, keyword=keyword, platform=platform, status=status, start_time=startTime, endTime=None, config_yaml=configYaml, deploy_yaml=deployYaml, token=token)
+		configYamlUrl = fs.url(configYaml.name)
+		deployYamlName = fileName
+		deployYamlUrl = fs.url(deployYaml.name)
+		Subject.objects.create(topic=topic, subject=subject, keyword=keyword, platform=platform, status=status, start_time=startTime, end_time=endTime, config_yaml_name=configYamlName, config_yaml_url=configYamlUrl, deploy_yaml_name=deployYamlName, deploy_yaml_url=deployYamlUrl, token=token)
 		return redirect('index')
 	else :
 		return render(request, 'addSubject.html', response)
 
 def editSubject(request, id):
-	topic = Topic.objects.all()
-	subject = get_object_or_404(Subject, id=id)
-	platform = Platform.objects.all()
-	token = Token.objects.all()
+	subjectWithId = get_object_or_404(Subject, id=id)
+	topicAll = Topic.objects.all()
+	platformAll = Platform.objects.all()
+	tokenAll = Token.objects.all()
 
 	response = {
-		"subject" : subject,
-		"topic" : topic,
-		"platform" : platform,
-		"token" : token
+		"subject" : subjectWithId,
+		"topic" : topicAll,
+		"platform" : platformAll,
+		"token" : tokenAll
 	}
 
 	if(request.method == "POST"):
-		topic = request.POST.get("topic")
+		topic = Topic.objects.get(topic_name=request.POST.get("topic"))
 		subject = request.POST.get("subject")
 		keyword = request.POST.get("keyword")
-		platform = request.POST.get("platform")
+		platform = Platform.objects.get(platform_name=request.POST.get("platform"))
 		status = 'active'
 		startTime = timezone.now()
 		endTime = None
 		token = None
-		if platform == 'Twitter':
-			token = request.POST.get("platform")
+		if platform.platform_name == 'Twitter':
+			token = Token.objects.get(token_name=request.POST.get("token"))
 		configYaml = None
 		deployYaml = None
 
-		name = platform+'_'+topic+'_'+subject
+		name = platform.platform_name+'_'+topic.topic_name+'_'+subject
 		fs = FileSystemStorage()
-		if fs.exist('config_'+name+'.yaml'):
-			fs.delete('config_'+name+'.yaml')
-		configTemplate = File(Platform.objects.get(platform_name=platform).config_template)
-		with open(settings.YAML_ROOT+'config_'+name+'.yaml', 'w') as f:
+		if subjectWithId.config_yaml_name is not "":
+			fs.delete(subjectWithId.config_yaml_name)
+		configTemplate = File(open(fs.path(platform.config_template_name), 'r'))
+		fileName = fs.save('config_'+name+'.yaml', configTemplate)
+		configYamlName = fileName
+		with fs.open(fileName, 'w') as f:
 			configYaml = File(f)
-			for line in sumber:
+			for line in configTemplate:
 				if '{{ name }}' in line:
 					configYaml.write(line.replace('{{ name }}', name))
 				elif '{{ project }}' in line:
-					configYaml.write(line.replace('{{ project }}', topic))
+					configYaml.write(line.replace('{{ project }}', topic.topic_name))
 				elif '{{ subject }}' in line:
 					configYaml.write(line.replace('{{ subject }}', subject))
 				elif '{{ keywords }}' in line:
-					configYaml.write(line.replace('{{ keywords }}', keywords))
+					configYaml.write(line.replace('{{ keywords }}', keyword))
 				else:
 					configYaml.write(line)
 		configTemplate.close()
 
-		deployTemplate = File(Platform.objects.get(platform_name=platform).deploy_template)
-		with open(settings.YAML_ROOT+'deployment_'+name+'.yaml', 'w') as f:
+		if subjectWithId.deploy_yaml_name is not "":
+			fs.delete(subjectWithId.deploy_yaml_name)
+		deployTemplate = File(open(fs.path(platform.deploy_template_name), 'r'))
+		fileName = fs.save('deployment_'+name+'.yaml', deployTemplate)
+		with fs.open(fileName, 'w') as f:
 			deployYaml = File(f)
-			for line in sumber:
+			for line in deployTemplate:
 				if '{{ name }}' in line:
 					deployYaml.write(line.replace('{{ name }}', name))
 				elif '{{ config_name }}' in line:
@@ -140,19 +148,27 @@ def editSubject(request, id):
 					deployYaml.write(line)
 		deployTemplate.close()
 
-		Subject.objects.filter(id=id).update(topic=topic, subject=subject, keyword=keyword, platform=platform, status=status, start_time=startTime, endTime=None, config_yaml=configYaml, deploy_yaml=deployYaml, token=token)
+		configYamlUrl = fs.url(configYaml.name)
+		deployYamlName = fileName
+		deployYamlUrl = fs.url(deployYaml.name)
+		Subject.objects.filter(id=id).update(topic=topic, subject=subject, keyword=keyword, platform=platform, status=status, start_time=startTime, end_time=endTime, config_yaml_name=configYamlName, config_yaml_url=configYamlUrl, deploy_yaml_name=deployYamlName, deploy_yaml_url=deployYamlUrl, token=token)
 		return redirect('index')
 	else :
 		return render(request, 'editSubject.html', response)
 
 def activateSubject(request, id):
     subject = get_object_or_404(Subject, id=id)
-    Subject.objects.filter(id=user.id).update(status='active')
+    status = 'active'
+    startTime = timezone.now()
+    endTime = None
+    Subject.objects.filter(id=subject.id).update(status=status, start_time=startTime, end_time=endTime)
     return redirect('index')
 
 def deactivateSubject(request, id):
 	subject = get_object_or_404(Subject, id=id)
-	Subject.objects.filter(id=user.id).update(status='inactive')
+	status = 'inactive'
+	endTime = timezone.now()
+	Subject.objects.filter(id=subject.id).update(status=status, end_time=endTime)
 	return redirect('index')
 
 def deployConfig(request, name):

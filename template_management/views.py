@@ -4,7 +4,6 @@ from .models import Platform
 from django.core.files.storage import FileSystemStorage
 from django.core.files import File
 from django.utils import timezone
-from django.conf import settings
 
 # Create your views here.
 def template(request):
