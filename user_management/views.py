@@ -16,7 +16,8 @@ def addUser(request):
         username = request.POST.get("username")
         name = request.POST.get("name")
         password = request.POST.get("password")
-        user = User.objects.create(username=username, name=name, password=password, status='active')
+        status = 'active'
+        user = User.objects.create(username=username, name=name, password=password, status=status)
         User.objects.filter(username=user.username).update(user_id='user'+str(user.id))
         return redirect('listUser')
     else :

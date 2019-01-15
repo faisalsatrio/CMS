@@ -82,7 +82,7 @@
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="center image">
-          <img src="{% static 'dist/img/alif.jpg' %}" class="img-circle" alt="User Image">
+          <img src="{% static 'dist/img/user.png' %}" class="img-circle" alt="User Image">
         </div>
         <div class="info">
           <h3>Muhammad Alif Fauzan</h3>
@@ -154,13 +154,28 @@
         <div class="row">
           <div class="col-sm-2"></div>
           <div class="col-sm-8">
-            <form id="form" method="POST" action="">
+            <form method="POST">
               {% csrf_token %}
-              {% for addSubject in form %}
-              <div>
-                {{ addSubject.label_tag }} </br> {{ addSubject }}
-              </div>
-              {% endfor %}
+              <label>Topic:</label> </br>
+              <select class="form-control" name="topic">
+                {% for list in topic %}
+                  <option value="{{ list.topic_name }}">{{ list.topic_name }}</option>
+                {% endfor %}
+              </select>
+              <label>Subject:</label> </br> <input type="text" class="form-control" name="subject" placeholder="subject" required>
+              <label>Keywords:</label> </br> <input type="text" class="form-control" name="keyword" placeholder='"keyword1","keyword2","keyword3",etc' required>
+              <label>Platform:</label> </br>
+              <select id="platform" class="form-control" name="platform" onchange="checkPlatform()">
+                {% for list in platform %}
+                  <option value="{{ list.platform_name }}">{{ list.platform_name }}</option>
+                {% endfor %}
+              </select>
+              <label>Token:</label> </br>
+              <select id="token" class="form-control" name="token">
+                {% for list in token %}
+                  <option value="{{ list.token_name }}">{{ list.token_name }}</option>
+                {% endfor %}
+              </select>
               <br>
               <button type="submit" class="btn btn-success pull-right">Save</button>
             </form>
@@ -204,5 +219,20 @@
 <!-- AdminLTE App -->
 <!-- <script src="dist/js/adminlte.min.js"></script> -->
 <script type="text/javascript" src="{% static 'dist/js/adminlte.min.js' %}"></script>
+<!-- Disabled Token -->
+<script>
+  function checkPlatform()
+  {
+    var platform = document.getElementById('platform').value;
+    var token = document.getElementById('token');
+
+    if (platform == 'Twitter'){
+      token.disabled=false;
+    }
+    else{
+      token.disabled=true;
+    }
+  }
+</script>
 </body>
 </html>
