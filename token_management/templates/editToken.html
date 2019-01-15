@@ -162,36 +162,7 @@
               <label>Access Key:</label> </br> <input type="text" class="form-control" name="accessKey" placeholder="access key" value="{{  token.access_key }}" required>
               <label>Access Secret:</label> </br> <input type="text" class="form-control" name="accessSecret" placeholder="access secret" value="{{  token.access_secret }}" required>
               <br>
-              <div class="row">
-                <div class="col-sm-9"></div>
-                <div class="col-sm-3">
-                  <a href="" data-toggle="modal" data-target="#modal{{ token.id }}"><button type="button" class="btn btn-danger">Delete</button></a>
-                  <!-- modal -->
-                  <div class="modal fade" id="modal{{ token.id }}">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span></button>
-                          <h4 class="modal-title"><i class="fa fa-warning text-red"></i> Delete Token</h4>
-                        </div>
-                        <div class="modal-body">
-                          <p>Are you sure want to delete token "{{ token.token_name }}"? All of the following related items will be deleted.</p>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
-                          <a href="{% url 'deleteToken' id=token.id %}"><button type="submit" class="btn btn-danger">Delete</button></a>
-                        </div>
-                      </div>
-                      <!-- /.modal-content -->
-                    </div>
-                    <!-- /.modal-dialog -->
-                  </div>
-                  <!-- /.modal -->
-
-                  <button type="submit" class="btn btn-success pull-right">Update</button>
-                </div>
-              </div>
+              <button type="submit" class="btn btn-success pull-right">Update</button>
             </form>
           </div>
         </div>

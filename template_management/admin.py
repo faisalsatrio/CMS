@@ -1,6 +1,5 @@
 from django.contrib import admin
-from .models import UploadConfig, UploadDeployment
+from .models import Platform
 
 # Register your models here.
-admin.site.register(UploadConfig)
-admin.site.register(UploadDeployment)
+admin.site.register(Platform)

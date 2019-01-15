@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>CMS - Edit Subject</title>
+  <title>CMS - Add Platform</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -82,7 +82,7 @@
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="center image">
-          <img src="{% static 'dist/img/alif.jpg' %}" class="img-circle" alt="User Image">
+          <img src="{% static 'dist/img/user.png' %}" class="img-circle" alt="User Image">
         </div>
         <div class="info">
           <h3>Muhammad Alif Fauzan</h3>
@@ -97,17 +97,11 @@
             <span>Topic Management</span>
           </a>
         </li>
-        <li class="active">
+        <li>
           <a href="{% url 'index' %}">
             <i class="fa fa-comments"></i>
             <span>Social Media Crawler</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-down pull-right"></i>
-            </span>
           </a>
-          <ul class="treeview-menu">
-            <li class="active"><a href="#"><i class="fa fa-circle-o"></i> Edit Subject</a></li>
-          </ul>
         </li>
         <li>
           <a href="{% url 'listToken' %}">
@@ -127,11 +121,17 @@
             <span>User Management</span>
           </a>
         </li>
-        <li>
+        <li  class="active">
           <a href="{% url 'template' %}">
             <i class="fa fa-file-code-o"></i>
             <span>Template Management</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-down pull-right"></i>
+            </span>
           </a>
+          <ul class="treeview-menu">
+            <li class="active"><a href="#"><i class="fa fa-circle-o"></i> Add Platform</a></li>
+          </ul>
         </li>
       </ul>
     </section>
@@ -142,7 +142,7 @@
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>Edit Topic</h1>
+      <h1>Add Platform</h1>
     </section>
 
     <br>
@@ -154,21 +154,11 @@
         <div class="row">
           <div class="col-sm-2"></div>
           <div class="col-sm-8">
-            <form id="form" method="POST" action="">
+            <form method="POST">
               {% csrf_token %}
-              {% for editTopic in form %}
-              <div>
-                {{ editTopic.label_tag }} </br> {{ editTopic }}
-              </div>
-              {% endfor %}
+              <label>Platform Name:</label> </br> <input type="text" class="form-control" name="platformName" placeholder="platform name" required>
               <br>
-              <div class="row">
-                <div class="col-sm-9"></div>
-                <div class="col-sm-3">
-                  <button type="submit" class="btn btn-danger">Deactivate</button>
-                  <button type="submit" class="btn btn-success pull-right">Update</button>
-                </div>
-              </div>
+              <button type="submit" class="btn btn-success pull-right">Save</button>
             </form>
           </div>
         </div>

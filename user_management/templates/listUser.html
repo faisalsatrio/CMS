@@ -82,7 +82,7 @@
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="center image">
-          <img src="{% static 'dist/img/alif.jpg' %}" class="img-circle" alt="User Image">
+          <img src="{% static 'dist/img/user.png' %}" class="img-circle" alt="User Image">
         </div>
         <div class="info">
           <h3>Muhammad Alif Fauzan</h3>
@@ -121,6 +121,12 @@
             <span>User Management</span>
           </a>
         </li>
+        <li>
+          <a href="{% url 'template' %}">
+            <i class="fa fa-file-code-o"></i>
+            <span>Template Management</span>
+          </a>
+        </li>
       </ul>
     </section>
     <!-- /.sidebar -->
@@ -148,45 +154,76 @@
             <tr>
               <th>User Id</th>
               <th>Username</th>
-              <th>Name</th>
+              <th>Full Name</th>
               <th>Status</th>
               <th>Action</th>
             </tr>
             </thead>
             <tbody>
+            {% for user in context %}
             <tr>
-              <td>user12</td>
-              <td>alif</td>
-              <td>Muhammad Alif Fauzan</td>
-              <td>Acive</td>
+              <td>{{ user.user_id }}</td>
+              <td>{{ user.username }}</td>
+              <td>{{ user.name }}</td>
+              {% if user.status == "active" %}
+                <td><small class="label bg-green">active</small></td>
+              {% else %}
+                <td><small class="label bg-red">inactive</small></td>
+              {% endif %}
               <td>
-                <a href="/user/edit"><div><i class="fa fa-pencil text-yellow"></i> edit</div></a>
-                <a href="" data-toggle="modal" data-target="#modal1"><i class="fa fa-ban text-red"></i> delete</a>
-
-                <!-- modal -->
-                <div class="modal fade" id="modal1">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title"><i class="fa fa-warning text-red"></i> Delete Topic</h4>
+                <a href="{% url 'editUser' id=user.id %}"><div><i class="fa fa-pencil text-yellow"></i> edit</div></a>
+                {% if user.status == "active" %}
+                  <a href="" data-toggle="modal" data-target="#modalDeactivate{{ user.id }}"><i class="fa fa-ban text-red"></i> deactivate</a>
+                  <!-- modal -->
+                  <div class="modal fade" id="modalDeactivate{{ user.id }}">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+                          <h4 class="modal-title"><i class="fa fa-warning text-red"></i> Deactivate User</h4>
+                        </div>
+                        <div class="modal-body">
+                          <p>Are you sure want to deactivate user "{{ user.username }}"?</p>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                          <a href="{% url 'deactivateUser' id=user.id %}"><button type="submit" class="btn btn-danger">deactivate</button></a>
+                        </div>
                       </div>
-                      <div class="modal-body">
-                        <p>Are you sure want to deactivate Muhammad Alif Fauzan?</p>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-danger">Delete</button>
-                      </div>
+                      <!-- /.modal-content -->
                     </div>
-                    <!-- /.modal-content -->
+                    <!-- /.modal-dialog -->
                   </div>
-                  <!-- /.modal-dialog -->
-                </div>
-                <!-- /.modal -->
+                  <!-- /.modal -->
+                {% else %}
+                  <a href="" data-toggle="modal" data-target="#modalActivate{{ user.id }}"><i class="fa fa-check text-green"></i> activate</a>
+                  <!-- modal -->
+                  <div class="modal fade" id="modalActivate{{ user.id }}">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+                          <h4 class="modal-title">Activate User</h4>
+                        </div>
+                        <div class="modal-body">
+                          <p>Are you sure want to activate user "{{ user.username }}"?</p>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                          <a href="{% url 'activateUser' id=user.id %}"><button type="submit" class="btn btn-success">Activate</button></a>
+                        </div>
+                      </div>
+                      <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                  </div>
+                  <!-- /.modal -->
+                {% endif %}
               </td>
             </tr>
+            {% endfor %}
             </tbody>
           </table>
         </div>

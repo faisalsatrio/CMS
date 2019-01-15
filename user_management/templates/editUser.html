@@ -82,7 +82,7 @@
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="center image">
-          <img src="{% static 'dist/img/alif.jpg' %}" class="img-circle" alt="User Image">
+          <img src="{% static 'dist/img/user.png' %}" class="img-circle" alt="User Image">
         </div>
         <div class="info">
           <h3>Muhammad Alif Fauzan</h3>
@@ -129,6 +129,12 @@
             <li class="active"><a href="#"><i class="fa fa-circle-o"></i> Edit User</a></li>
           </ul>
         </li>
+        <li>
+          <a href="{% url 'template' %}">
+            <i class="fa fa-file-code-o"></i>
+            <span>Template Management</span>
+          </a>
+        </li>
       </ul>
     </section>
     <!-- /.sidebar -->
@@ -150,13 +156,20 @@
         <div class="row">
           <div class="col-sm-2"></div>
           <div class="col-sm-8">
-            <form id="form" method="POST" action="">
+            <form method="POST">
               {% csrf_token %}
-              {% for editUser in form %}
-              <div>
-                {{ editUser.label_tag }} </br> {{ editUser }}
+              <label>User Id:</label> </br> <input type="text" class="form-control" value="{{ user.user_id }}" disabled>
+              <label>Username:</label> </br> <input type="text" class="form-control" name="username" placeholder="username" value="{{ user.username }}" required>
+              <label>Full Name:</label> </br> <input type="text" class="form-control" name="name" placeholder="full name" value="{{ user.name }}" required>
+              <label>Password:</label> </br>
+              <div class="row">
+                <div class="col-sm-11">
+                  <input type="password" id="password-field" class="form-control" name="password" placeholder="password" value="{{ user.password }}" required>
+                </div>
+                <div class="col-sm-1">
+                  <i id="pass-status" class="fa fa-eye-slash" aria-hidden="true" onClick="viewPassword()"></i>
+                </div>
               </div>
-              {% endfor %}
               <br>
               <button type="submit" class="btn btn-success pull-right">Update</button>
             </form>
@@ -200,5 +213,23 @@
 <!-- AdminLTE App -->
 <!-- <script src="dist/js/adminlte.min.js"></script> -->
 <script type="text/javascript" src="{% static 'dist/js/adminlte.min.js' %}"></script>
+<!-- Show password -->
+<script>
+  function viewPassword()
+  {
+    var passwordInput = document.getElementById('password-field');
+    var passStatus = document.getElementById('pass-status');
+
+    if (passwordInput.type == 'password'){
+      passwordInput.type='text';
+      passStatus.className='fa fa-eye';
+
+    }
+    else{
+      passwordInput.type='password';
+      passStatus.className='fa fa-eye-slash';
+    }
+  }
+</script>
 </body>
 </html>

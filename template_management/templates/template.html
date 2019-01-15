@@ -82,7 +82,7 @@
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="center image">
-          <img src="{% static 'dist/img/alif.jpg' %}" class="img-circle" alt="User Image">
+          <img src="{% static 'dist/img/user.png' %}" class="img-circle" alt="User Image">
         </div>
         <div class="info">
           <h3>Muhammad Alif Fauzan</h3>
@@ -144,6 +144,7 @@
 
     <!-- Main content -->
     <section class="content">
+      <a href="{% url 'addPlatform' %}"><button type="button" class="btn btn-success pull-right">Add Platform</button></a>
       <br>
       <br></br>
       <div class="box">
@@ -153,58 +154,108 @@
             <tr>
               <th>Platform</th>
               <th>Config Template File</th>
-              <th>Upload Date</th>
+              <th>Config Upload Date</th>
               <th>Config Action</th>
               <th>Deployment Template File</th>
-              <th>Upload Date</th>
+              <th>Deployment Upload Date</th>
               <th>Deployment Action</th>
+              <th>Action</th>
             </tr>
             </thead>
             <tbody>
+            {% for platform in context %}
             <tr>
-              <td>Twitter</td>
-              <td><a>crawler-config.yaml</a></td>
-              <td>2018-12-2</td>
+              <td>{{ platform.platform_name }}</td>
+              <td>{{ platform.config_template }}</td>
+              <td>{{ platform.config_upload_date }}</td>
               <td>
-                <form method="POST" enctype="multipart/form-data">
-                  {% csrf_token %}
-                  <input type="file" name="document">
-                  <button type="submit" class="btn btn-success pull-right">Save</button>
-                  <!-- <a type="submit" data-toggle="modal" data-target="#modal1"><i class="fa fa-upload"></i> upload</a> -->
-                </form>
+                <a href="" data-toggle="modal" data-target="#modalConfig{{ platform.id }}"><i class="fa fa-upload"></i> upload</a>
+                <!-- modal -->
+                <div class="modal fade" id="modalConfig{{ platform.id }}">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Upload Config Template</h4>
+                      </div>
+                      <div class="modal-body">
+                        <p>Upload config template for platform "{{ platform.platform_name }}".</p>
+                        <form method="POST" enctype="multipart/form-data">
+                          {% csrf_token %}
+                          <input type="file" name="configTemplate">
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success pull-right">Upload</button>
+                      </div>
+                    </div>
+                    <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
               </td>
-              <td><a>deployment.yaml</a></td>
-              <td>2018-12-2</td>
+              <td>{{ platform.deploy_template }}</td>
+              <td>{{ platform.deploy_upload_date }}</td>
               <td>
-                <a href="" data-toggle="modal" data-target="#modal1"><i class="fa fa-upload"></i> upload</a>
+                <a href="" data-toggle="modal" data-target="#modalDeploy{{ platform.id }}"><i class="fa fa-upload"></i> upload</a>
+                <!-- modal -->
+                <div class="modal fade" id="modalDeploy{{ platform.id }}">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Upload Deployment Template</h4>
+                      </div>
+                      <div class="modal-body">
+                        <p>Upload deployment template for platform "{{ platform.platform_name }}".</p>
+                        <form method="POST" enctype="multipart/form-data">
+                          {% csrf_token %}
+                          <input type="file" name="deployTemplate">
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success pull-right">Upload</button>
+                      </div>
+                    </div>
+                    <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
+              </td>
+              <td>
+                <a href="{% url 'editPlatform' id=platform.id %}"><div><i class="fa fa-pencil text-yellow"></i> edit</div></a>
+                <a href="" data-toggle="modal" data-target="#modal{{ platform.id }}"><i class="fa fa-ban text-red"></i> delete</a>
+                <!-- modal -->
+                <div class="modal fade" id="modal{{ platform.id }}">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title"><i class="fa fa-warning text-red"></i> Delete Platform</h4>
+                      </div>
+                      <div class="modal-body">
+                        <p>Are you sure want to delete Platform "{{ platform.platform_name }}"? All of the following related items will be deleted.</p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                        <a href="{% url 'deletePlatform' id=platform.id %}"><button type="submit" class="btn btn-danger">Delete</button></a>
+                      </div>
+                    </div>
+                    <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
               </td>
             </tr>
-            <tr>
-              <td>Facebook</td>
-              <td><a>crawler-config.yaml</a></td>
-              <td>2018-12-2</td>
-              <td>
-                <a href="" data-toggle="modal" data-target="#modal1"><i class="fa fa-upload"></i> upload</a>
-              </td>
-              <td><a>deployment.yaml</a></td>
-              <td>2018-12-2</td>
-              <td>
-                <a href="" data-toggle="modal" data-target="#modal1"><i class="fa fa-upload"></i> upload</a>
-              </td>
-            </tr>
-            <tr>
-              <td>Instagram</td>
-              <td><a>crawler-config.yaml</a></td>
-              <td>2018-12-2</td>
-              <td>
-                <a href="" data-toggle="modal" data-target="#modal1"><i class="fa fa-upload"></i> upload</a>
-              </td>
-              <td><a>deployment.yaml</a></td>
-              <td>2018-12-2</td>
-              <td>
-                <a href="" data-toggle="modal" data-target="#modal1"><i class="fa fa-upload"></i> upload</a>
-              </td>
-            </tr>
+            {% endfor %}
             </tbody>
           </table>
         </div>
