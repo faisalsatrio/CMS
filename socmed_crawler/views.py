@@ -81,7 +81,13 @@ def addSubject(request):
 		deployYamlName = fileName
 		deployYamlUrl = fs.url(deployYaml.name)
 		subjectWithId = Subject.objects.create(topic=topic, subject=subject, keyword=keyword, platform=platform, status=status, start_time=startTime, config_yaml_name=configYamlName, config_yaml_url=configYamlUrl, deploy_yaml_name=deployYamlName, deploy_yaml_url=deployYamlUrl, token=token)
-		activateSubject(request, subjectWithId.id)
+
+		# update token.list_subject and token.count_subject
+		token.list_subject = token.list_subject + subjectWithId.subject + ", "
+		token.count_subject = token.count_subject + 1
+		token.save()
+
+		# activateSubject(request, subjectWithId.id)
 		return redirect('index')
 	else :
 		return render(request, 'addSubject.html', response)
@@ -100,6 +106,11 @@ def editSubject(request, id):
 	}
 
 	if(request.method == "POST"):
+		# update token.list_subject and token.count_subject
+		token.list_subject = token.list_subject.replace(subjectWithId.subject + ", ", "replaceThis")
+
+		# deleteCrawler(request, subjectWithId.id)
+		# deleteConfig(requst, subjectWithId.id)
 		topic = Topic.objects.get(topic_name=request.POST.get("topic"))
 		subject = request.POST.get("subject")
 		keyword = request.POST.get("keyword")
@@ -153,7 +164,13 @@ def editSubject(request, id):
 		configYamlUrl = fs.url(configYaml.name)
 		deployYamlName = fileName
 		deployYamlUrl = fs.url(deployYaml.name)
-		Subject.objects.filter(id=id).update(topic=topic, subject=subject, keyword=keyword, platform=platform, status=status, start_time=startTime, end_time=endTime, config_yaml_name=configYamlName, config_yaml_url=configYamlUrl, deploy_yaml_name=deployYamlName, deploy_yaml_url=deployYamlUrl, token=token)
+		subjectWithId = Subject.objects.filter(id=id).update(topic=topic, subject=subject, keyword=keyword, platform=platform, status=status, start_time=startTime, end_time=endTime, config_yaml_name=configYamlName, config_yaml_url=configYamlUrl, deploy_yaml_name=deployYamlName, deploy_yaml_url=deployYamlUrl, token=token)
+
+		# update token.list_subject and token.count_subject
+		token.list_subject = token.list_subject.replace("replaceThis", subjectWithId.subject + ", ")
+		token.save()
+
+		# activateSubject(request, subjectWithId.id)
 		return redirect('index')
 	else :
 		return render(request, 'editSubject.html', response)
@@ -163,18 +180,30 @@ def activateSubject(request, id):
     status = 'active'
     startTime = timezone.now()
     endTime = None
+
+	# update token.list_subject and token.count_subject
+    subject.token.list_subject = subject.token.list_subject + subject.subject + ", "
+    subject.token.count_subject = subject.token.count_subject + 1
+    subject.token.save()
+
     Subject.objects.filter(id=subject.id).update(status=status, start_time=startTime, end_time=endTime)
-    deployConfig(request, id)
-    deployCrawler(request, id)
+    # deployConfig(request, id)
+    # deployCrawler(request, id)
     return redirect('index')
 
 def deactivateSubject(request, id):
 	subject = get_object_or_404(Subject, id=id)
 	status = 'inactive'
 	endTime = timezone.now()
+
+	# update token.list_subject and token.count_subject
+	subject.token.list_subject = subject.token.list_subject.replace(subject.subject + ", ", "")
+	subject.token.count_subject = subject.token.count_subject - 1
+	subject.token.save()
+
 	Subject.objects.filter(id=subject.id).update(status=status, end_time=endTime)
-	deleteCrawler(request, id)
-	deleteConfig(requst, id)
+	# deleteCrawler(request, id)
+	# deleteConfig(requst, id)
 	return redirect('index')
 
 def deployConfig(request, id):

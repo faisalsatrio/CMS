@@ -162,7 +162,7 @@
             <tr>
               <td>{{ platform.platform_name }}</td>
               <td><a href="{{ platform.config_template_url }}">{{ platform.config_template_name }}</a></td>
-              <td>{{ platform.config_upload_date }}</td>
+              <td>{{ platform.config_upload_date|date:"Y-m-d H:i" }}</td>
               <td>
                 <a href="" data-toggle="modal" data-target="#modalConfig{{ platform.id }}"><i class="fa fa-upload"></i> upload</a>
                 <!-- modal -->
@@ -194,7 +194,7 @@
                 <!-- /.modal -->
               </td>
               <td><a href="{{ platform.deploy_template_url }}">{{ platform.deploy_template_name }}</a></td>
-              <td>{{ platform.deploy_upload_date }}</td>
+              <td>{{ platform.deploy_upload_date|date:"Y-m-d H:i" }}</td>
               <td>
                 <a href="" data-toggle="modal" data-target="#modalDeploy{{ platform.id }}"><i class="fa fa-upload"></i> upload</a>
                 <!-- modal -->

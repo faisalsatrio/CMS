@@ -159,7 +159,7 @@
             <tr>
               <td>{{ news.crawler_name }}</td>
               <td>{{ news.site }}</td>
-              <td>{{ news.start_date }}</td>
+              <td>{{ news.start_date|date:"Y-m-d H:i" }}</td>
               <td>{{ news.catch_up }}</td>
               <td>
                 <a href="{% url 'editNews' id=news.id %}"><div><i class="fa fa-pencil text-yellow"></i> edit</div></a>

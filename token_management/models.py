@@ -7,5 +7,7 @@ class Token(models.Model):
     consumer_secret = models.CharField(max_length=100)
     access_key = models.CharField(max_length=100)
     access_secret = models.CharField(max_length=100)
+    list_subject = models.CharField(max_length=500)
+    count_subject = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

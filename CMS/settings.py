@@ -60,7 +60,7 @@ ROOT_URLCONF = 'CMS.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -75,6 +75,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'CMS.wsgi.application'
 
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = 'login'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
@@ -112,6 +114,10 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Etc/GMT-7'
+
+TIME_INPUT_FORMATS = [
+    '%Y-%m-%d %H:%M:%S',
+]
 
 USE_I18N = True
 

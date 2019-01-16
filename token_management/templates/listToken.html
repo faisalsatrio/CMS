@@ -164,7 +164,31 @@
               <td>{{ token.consumer_secret }}</td>
               <td>{{ token.access_key }}</td>
               <td>{{ token.access_secret }}</td>
-              <td>-</td>
+              <td>
+                <a href="" data-toggle="modal" data-target="#modalCount{{ token.id }}">{{ token.count_subject }}</a>
+                <!-- modal -->
+                <div class="modal fade" id="modalCount{{ token.id }}">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">List Subject</h4>
+                      </div>
+                      <div class="modal-body">
+                        <p>List of subjects using token "{{ token.token_name }}":</p>
+                        <p>{{ token.list_subject }}</p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default pull-right" data-dismiss="modal">OK</button>
+                      </div>
+                    </div>
+                    <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
+              </td>
               <td>
                 <a href="{% url 'editToken' id=token.id %}"><div><i class="fa fa-pencil text-yellow"></i> edit</div></a>
                 <a href="" data-toggle="modal" data-target="#modal{{ token.id }}"><i class="fa fa-ban text-red"></i> delete</a>
