@@ -1,5 +1,7 @@
 CMS
+
 https://github.com/faisalsatrio/CMS
+
 note: All of these following instructions are run with Windows 10. For any other operating system may be different.
 Table of contect:
 * Get CMS repository
@@ -7,20 +9,27 @@ Table of contect:
 * Play with the CMS
 
 Get CMS repository
+
 You can get the repository by cloning from “https://github.com/faisalsatrio/CMS.git” or you can go to link and download directly from the link.
 
 Setting up environment
+
 Minimum requirements:
 * Python
 * Django
 * Kubernetes
 * Yaml
-Make sure you have a terminal which can run pip command or something for installing. If you’re using Python 2.7.9 (or greater) or Python 3.4 (or greater), then PIP comes installed with Python by default. If you’re using an older version of Python, you’ll need to see by yourself how to install pip in your computer??. In this case, I used “Anaconda prompt” for daily python basis. 
-If you think you have one or even all of the items above, you can check it by run “pip freeze” command on your terminal.
+
+Make sure you have a terminal which can run pip command or something for installing. If you?re using Python 2.7.9 (or greater) or Python 3.4 (or greater), then PIP comes installed with Python by default. If you?re using an older version of Python, you?ll need to see by yourself how to install pip in your computer hehe. In this case, I used ?Anaconda prompt? for daily python basis. 
+
+If you think you have one or even all of the items above, you can check it by run this command on your terminal.
+	pip freeze
+
 If you have installed all of the items above and shits still happen please let me know.
 
-      Installing Python
-I’m using python with version 3.6.5. Anyway, you can download the python from this link : https://www.python.org/downloads/. See the instruction on the website about how to set it up.
+Installing Python
+
+I?m using python with version 3.6.5. Anyway, you can download the python from this link : https://www.python.org/downloads/. See the instruction on the website about how to set it up.
 
       Installing Django
 I’m using Django with version 2.1.3. You can install it by run “pip install django” on your terminal.
