@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'news_crawler',
     'token_management',
     'template_management',
+    'placeholder',
 ]
 
 MIDDLEWARE = [
