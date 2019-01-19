@@ -23,7 +23,7 @@ def index(request):
 def addSubject(request):
 	topicAll = Topic.objects.all()
 	platformAll = Platform.objects.all()
-	tokenAll = Token.objects.all()
+	tokenAll = Token.objects.filter(count_subject__lte=3)
 	response = {
 		"topic" : topicAll,
 		"platform" : platformAll,
@@ -96,7 +96,7 @@ def editSubject(request, id):
 	subjectWithId = get_object_or_404(Subject, id=id)
 	topicAll = Topic.objects.all()
 	platformAll = Platform.objects.all()
-	tokenAll = Token.objects.all()
+	tokenAll = Token.objects.filter(count_subject__lte=3)
 
 	response = {
 		"subject" : subjectWithId,
