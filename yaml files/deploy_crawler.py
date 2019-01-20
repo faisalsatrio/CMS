@@ -3,7 +3,7 @@ from os import path
 import yaml
 
 from kubernetes import client, config
-
+import kubernetes
 
 def main():
     # Configs can be set in Configuration class directly or using helper
@@ -14,9 +14,11 @@ def main():
     with open(path.join(path.dirname(__file__), "crawler-twitter-tes-subject.yaml")) as f:
         dep = yaml.load(f)
         k8s_beta = client.ExtensionsV1beta1Api()
-        # resp = k8s_beta.create_namespaced_deployment(
-            # body=dep, namespace="staging")
-        resp = k8s_beta.delete_namespaced_deployment(name="crawler-twitter-tes-subject", namespace="staging")
+        resp = k8s_beta.create_namespaced_deployment(
+            body=dep, namespace="staging")
+        # body = kubernetes.client.V1DeleteOptions()
+        # body.propagation_policy='Foreground'
+        # resp = k8s_beta.delete_namespaced_deployment(name="crawler-twitter-tes-subject", namespace="staging", body=body)
         print("Deployment created. status='%s'" % str(resp.status))
 
 

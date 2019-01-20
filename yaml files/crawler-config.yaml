@@ -4,7 +4,7 @@ data:
     {
       "project_topic": "{{ project }}",
       "subject": "{{ subject }}",
-      "keywords": ["{{ keywords }}"]
+      "keywords": [{{ keywords }}]
     }
 kind: ConfigMap
 metadata:

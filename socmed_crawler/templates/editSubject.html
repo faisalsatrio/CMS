@@ -169,9 +169,9 @@
               </select>
               <label>Token:</label> </br>
               <select id="token" class="form-control" name="token">
-                <option value="{{ subject.token.token_name }}" hidden>{{ subject.token.token_name }} ({{ list.count_subject }} job(s))</option>
+                <option value="{{ subject.token.token_name }}" hidden>{{ subject.token.token_name }} ({{ subject.token.count_subject }} job(s))</option>
                 {% for list in token %}
-                  <option value="{{ list.token_name }}">{{ list.token_name }}</option>
+                  <option value="{{ list.token_name }}">{{ list.token_name }} ({{ list.count_subject }} job(s))</option>
                 {% endfor %}
               </select>
               <br>

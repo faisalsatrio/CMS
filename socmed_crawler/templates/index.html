@@ -176,7 +176,6 @@
               <td>{{ subject.end_time|date:"Y-m-d H:i:s" }}</td>
               <td><a href="{{ subject.config_yaml_url }}">{{ subject.config_yaml_name }}</a><br><a href="{{ subject.deploy_yaml_url }}">{{ subject.deploy_yaml_name }}</a></td>
               <td>
-                <a href="{% url 'editSubject' id=subject.id %}"><div><i class="fa fa-pencil text-yellow"></i> edit</div></a>
                 {% if subject.status == "active" %}
                   <a href="" data-toggle="modal" data-target="#modalDeactivate{{ subject.id }}"><i class="fa fa-ban text-red"></i> deactivate</a>
                   <!-- modal -->
@@ -202,6 +201,7 @@
                   </div>
                   <!-- /.modal -->
                 {% else %}
+                  <a href="{% url 'editSubject' id=subject.id %}"><div><i class="fa fa-pencil text-yellow"></i> edit</div></a>
                   <a href="" data-toggle="modal" data-target="#modalActivate{{ subject.id }}"><i class="fa fa-check text-green"></i> activate</a>
                   <!-- modal -->
                   <div class="modal fade" id="modalActivate{{ subject.id }}">
@@ -218,6 +218,30 @@
                         <div class="modal-footer">
                           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
                           <a href="{% url 'activateSubject' id=subject.id %}"><button type="submit" class="btn btn-success">Activate</button></a>
+                        </div>
+                      </div>
+                      <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                  </div>
+                  <!-- /.modal -->
+                  <br>
+                  <a href="" data-toggle="modal" data-target="#modalDelete{{ subject.id }}"><i class="fa fa-trash text-red"></i> delete</a>
+                  <!-- modal -->
+                  <div class="modal fade" id="modalDelete{{ subject.id }}">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+                          <h4 class="modal-title"><i class="fa fa-warning text-red"></i> Delete Job</h4>
+                        </div>
+                        <div class="modal-body">
+                          <p>Are you sure want to delete job "{{ subject.subject }}"? All of the following related items will be deleted.</p>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                          <a href="{% url 'deleteSubject' id=subject.id %}"><button type="submit" class="btn btn-danger">Delete</button></a>
                         </div>
                       </div>
                       <!-- /.modal-content -->

@@ -1,13 +1,13 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: crawler-{{ name }}
+  name: crawler-twitter-tes-subject
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: crawler-{{ name }}
+        app: crawler-twitter-tes-subject
     spec:
       containers:
         - name: tweet-crawler
@@ -24,22 +24,22 @@ spec:
             - name: TWITTER_CONSUMER_KEY
               valueFrom:
                 secretKeyRef:
-                  name: {{ token_name }}
+                  name: token1
                   key: TWITTER_CONSUMER_KEY
             - name: TWITTER_CONSUMER_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: {{ token_name }}
+                  name: token1
                   key: TWITTER_CONSUMER_SECRET
             - name: TWITTER_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
-                  name: {{ token_name }}
+                  name: token1
                   key: TWITTER_ACCESS_KEY
             - name: TWITTER_ACCESS_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: {{ token_name }}
+                  name: token1
                   key: TWITTER_ACCESS_SECRET
           volumeMounts:
             - name: tweet-saver-sa
@@ -57,7 +57,7 @@ spec:
               path: sa.json
         - name: config-volume
           configMap:
-            name: {{ config_name }}
+            name: config-twitter-tes-subject
             items:
-            - key: {{ config_name }}
+            - key: config-twitter-tes-subject
               path: input.json
