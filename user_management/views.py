@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import User
 from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
-
+@login_required(login_url='login')
 def listUser(request):
     context = User.objects.all()
     response = {
@@ -11,6 +12,7 @@ def listUser(request):
     }
     return render(request, 'listUser.html', response)
 
+@login_required(login_url='login')
 def addUser(request):
     if(request.method == "POST"):
         username = request.POST.get("username")
@@ -23,6 +25,7 @@ def addUser(request):
     else :
         return render(request, 'addUser.html')
 
+@login_required(login_url='login')
 def editUser(request, id):
     user = get_object_or_404(User, id=id)
 
@@ -39,11 +42,13 @@ def editUser(request, id):
     else :
         return render(request, 'editUser.html', response)
 
+@login_required(login_url='login')
 def activateUser(request, id):
     user = get_object_or_404(User, id=id)
     User.objects.filter(id=user.id).update(status='active')
     return redirect('listUser')
 
+@login_required(login_url='login')
 def deactivateUser(request, id):
 	user = get_object_or_404(User, id=id)
 	User.objects.filter(id=user.id).update(status='inactive')

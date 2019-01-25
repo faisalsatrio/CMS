@@ -2,9 +2,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Topic
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
-
+@login_required(login_url='login')
 def listTopic(request):
 	context = Topic.objects.all()
 	response = {
@@ -12,6 +13,7 @@ def listTopic(request):
     }
 	return render(request, 'listTopic.html', response)
 
+@login_required(login_url='login')
 def addTopic(request):
     if(request.method == "POST"):
         topicName = request.POST.get("topicName")
@@ -22,6 +24,7 @@ def addTopic(request):
     else :
         return render(request, 'addTopic.html')
 
+@login_required(login_url='login')
 def editTopic(request, id):
     topic = get_object_or_404(Topic, id=id)
 
@@ -38,6 +41,7 @@ def editTopic(request, id):
     else :
         return render(request, 'editTopic.html', response)
 
+@login_required(login_url='login')
 def deleteTopic(request, id):
 	topic = get_object_or_404(Topic, id=id)
 	topic.delete()

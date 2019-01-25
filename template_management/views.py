@@ -4,8 +4,10 @@ from .models import Platform
 from django.core.files.storage import FileSystemStorage
 from django.core.files import File
 from django.utils import timezone
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+@login_required(login_url='login')
 def template(request):
 	context = Platform.objects.all()
 	response = {
@@ -60,6 +62,7 @@ def uploadDeployment(request, id):
 
 	return redirect('template')
 
+@login_required(login_url='login')
 def addPlatform(request):
     if(request.method == "POST"):
         platformName = request.POST.get("platformName")
@@ -68,6 +71,7 @@ def addPlatform(request):
     else :
         return render(request, 'addPlatform.html')
 
+@login_required(login_url='login')
 def editPlatform(request, id):
     platform = get_object_or_404(Platform, id=id)
 
@@ -82,6 +86,7 @@ def editPlatform(request, id):
     else :
         return render(request, 'editPlatform.html', response)
 
+@login_required(login_url='login')
 def deletePlatform(request, id):
 	platform = get_object_or_404(Platform, id=id)
 	platform.delete()

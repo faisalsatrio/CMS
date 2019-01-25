@@ -3,8 +3,10 @@ from .models import Token
 from django.http import HttpResponse, HttpResponseRedirect
 from kubernetes import client, config
 import kubernetes
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+@login_required(login_url='login')
 def listToken(request):
 	context = Token.objects.all()
 	response = {
@@ -12,6 +14,7 @@ def listToken(request):
     }
 	return render(request, 'listToken.html', response)
 
+@login_required(login_url='login')
 def addToken(request):
 	if(request.method == "POST"):
 		tokenName = request.POST.get("tokenName")
@@ -27,6 +30,7 @@ def addToken(request):
 	else :
 		return render(request, 'addToken.html')
 
+@login_required(login_url='login')
 def editToken(request, id):
 	token = get_object_or_404(Token, id=id)
 
@@ -46,6 +50,7 @@ def editToken(request, id):
 	else :
 		return render(request, 'editToken.html', response)
 
+@login_required(login_url='login')
 def deleteToken(request, id):
 	token = get_object_or_404(Token, id=id)
 	token.delete()

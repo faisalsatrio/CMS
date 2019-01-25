@@ -12,15 +12,20 @@ from os import path
 import yaml
 from kubernetes import client, config
 import kubernetes
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+@login_required(login_url='login')
 def index(request):
 	context = Subject.objects.all()
+	user = request.user
 	response = {
+		"user" : user,
         "context" : context
     }
 	return render(request, 'index.html', response)
 
+@login_required(login_url='login')
 def addSubject(request):
 	topicAll = Topic.objects.all()
 	platformAll = Platform.objects.all()
@@ -90,6 +95,7 @@ def addSubject(request):
 	else :
 		return render(request, 'addSubject.html', response)
 
+@login_required(login_url='login')
 def editSubject(request, id):
 	subjectWithId = get_object_or_404(Subject, id=id)
 	topicAll = Topic.objects.all()
@@ -167,6 +173,7 @@ def editSubject(request, id):
 	else :
 		return render(request, 'editSubject.html', response)
 
+@login_required(login_url='login')
 def deleteSubject(request, id):
 	subject = get_object_or_404(Subject, id=id)
 	fs = FileSystemStorage()
@@ -175,6 +182,7 @@ def deleteSubject(request, id):
 	subject.delete()
 	return redirect('index')
 
+@login_required(login_url='login')
 def activateSubject(request, id):
     subject = get_object_or_404(Subject, id=id)
     status = 'active'
@@ -191,6 +199,7 @@ def activateSubject(request, id):
     deployCrawler(request, id)
     return redirect('index')
 
+@login_required(login_url='login')
 def deactivateSubject(request, id):
 	subject = get_object_or_404(Subject, id=id)
 	status = 'inactive'
