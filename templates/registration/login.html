@@ -54,9 +54,15 @@
         <!-- /.col -->
       </div>
     </form>
-
   </div>
   <!-- /.login-box-body -->
+  {% if form.non_field_errors %}
+  <ul class='text-red form-errors'>
+    {% for error in form.non_field_errors %}
+    <li>{{ error }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
 </div>
 <!-- /.login-box -->
 

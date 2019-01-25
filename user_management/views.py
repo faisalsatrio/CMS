@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 # Create your views here.
 @login_required(login_url='login')
@@ -16,11 +16,11 @@ def listUser(request):
 def addUser(request):
     if(request.method == "POST"):
         username = request.POST.get("username")
-        name = request.POST.get("name")
+        firstName = request.POST.get("firstName")
+        lastName = request.POST.get("lastName")
         password = request.POST.get("password")
         status = 'active'
-        user = User.objects.create(username=username, name=name, password=password, status=status)
-        User.objects.filter(username=user.username).update(user_id='user'+str(user.id))
+        user = User.objects.create_user(username=username, first_name=firstName, last_name=lastName, password=password)
         return redirect('listUser')
     else :
         return render(request, 'addUser.html')
@@ -30,26 +30,32 @@ def editUser(request, id):
     user = get_object_or_404(User, id=id)
 
     response = {
-		'user' : user
+		'users' : user
 	}
 
     if(request.method == "POST"):
         username = request.POST.get("username")
-        name = request.POST.get("name")
+        firstName = request.POST.get("firstName")
+        lastName = request.POST.get("lastName")
         password = request.POST.get("password")
-        User.objects.filter(id=id).update(username=username, name=name, password=password)
+        User.objects.filter(id=id).update(username=username, first_name=firstName, last_name=lastName, is_active=True)
+        user = User.objects.get(id=id)
+        user.set_password(password)
+        user.save()
         return redirect('listUser')
     else :
         return render(request, 'editUser.html', response)
 
 @login_required(login_url='login')
 def activateUser(request, id):
-    user = get_object_or_404(User, id=id)
-    User.objects.filter(id=user.id).update(status='active')
-    return redirect('listUser')
+    if request.user.is_superuser == True:
+        user = get_object_or_404(User, id=id)
+        User.objects.filter(id=user.id).update(is_active=True)
+        return redirect('listUser')
 
 @login_required(login_url='login')
 def deactivateUser(request, id):
-	user = get_object_or_404(User, id=id)
-	User.objects.filter(id=user.id).update(status='inactive')
-	return redirect('listUser')
+    if request.user.is_superuser == True:
+        user = get_object_or_404(User, id=id)
+        User.objects.filter(id=user.id).update(is_active=False)
+        return redirect('listUser')

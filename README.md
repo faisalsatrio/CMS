@@ -20,7 +20,7 @@ Minimum requirements:
 * Kubernetes
 * Yaml
 
-Make sure you have a terminal which can run pip command or something for installing. If you`re using Python 2.7.9 (or greater) or Python 3.4 (or greater), then PIP comes installed with Python by default. If youre using an older version of Python, youll need to see by yourself how to install pip in your computer hehe. In this case, I used `Anaconda prompt` for daily python basis. 
+Make sure you have a terminal which can run pip command or something for installing. If youre using Python 2.7.9 (or greater) or Python 3.4 (or greater), then PIP comes installed with Python by default. If youre using an older version of Python, youll need to see by yourself how to install pip in your computer hehe. In this case, I used `Anaconda prompt` for daily python basis. 
 
 If you think you have one or even all of the items above, you can check it by run this command on your terminal.
 	
@@ -53,7 +53,15 @@ Don’t know why, the ordinary yaml didn’t work for me due to version problem or s
 
 `Play with the CMS`
 
-After you have installed the requirements, now you can play around with the CMS. But before that, open the terminal and get into the CMS directory. After you are in the CMS directory, run this command.
+After you have installed the requirements, now you can play around with the CMS. But before that, open the terminal and get into the CMS directory. After you are in the CMS directory, activate the CMS environment by run this command for Windows
+
+	activate CMS
+
+Or this for Linux/macOS
+
+	source activate CMS
+
+Everytime you want to play with the CMS, make sure you have activated the environment. 
 
 	python manage.py makemigrations
 

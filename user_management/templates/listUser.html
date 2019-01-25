@@ -155,66 +155,76 @@
             </tr>
             </thead>
             <tbody>
-            {% for user in context %}
+            {% for users in context %}
             <tr>
-              <td>{{ user.user_id }}</td>
-              <td>{{ user.username }}</td>
-              <td>{{ user.name }}</td>
-              {% if user.status == "active" %}
+              <td>user{{ users.id }}</td>
+              <td>{{ users.username }}</td>
+              <td>{{ users.first_name }} {{ users.last_name }}</td>
+              {% if users.is_active == True %}
                 <td><small class="label bg-green">active</small></td>
               {% else %}
                 <td><small class="label bg-red">inactive</small></td>
               {% endif %}
               <td>
-                <a href="{% url 'editUser' id=user.id %}"><div><i class="fa fa-pencil text-yellow"></i> edit</div></a>
-                {% if user.status == "active" %}
-                  <a href="" data-toggle="modal" data-target="#modalDeactivate{{ user.id }}"><i class="fa fa-ban text-red"></i> deactivate</a>
-                  <!-- modal -->
-                  <div class="modal fade" id="modalDeactivate{{ user.id }}">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span></button>
-                          <h4 class="modal-title"><i class="fa fa-warning text-red"></i> Deactivate User</h4>
-                        </div>
-                        <div class="modal-body">
-                          <p>Are you sure want to deactivate user "{{ user.username }}"?</p>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
-                          <a href="{% url 'deactivateUser' id=user.id %}"><button type="submit" class="btn btn-danger">deactivate</button></a>
-                        </div>
-                      </div>
-                      <!-- /.modal-content -->
-                    </div>
-                    <!-- /.modal-dialog -->
-                  </div>
-                  <!-- /.modal -->
+                {% if user.is_superuser == False %}
+                {% if users.username == user.username %}
+                  <a href="{% url 'editUser' id=users.id %}"><div><i class="fa fa-pencil text-yellow"></i> edit</div></a>
+                {% endif %}
                 {% else %}
-                  <a href="" data-toggle="modal" data-target="#modalActivate{{ user.id }}"><i class="fa fa-check text-green"></i> activate</a>
-                  <!-- modal -->
-                  <div class="modal fade" id="modalActivate{{ user.id }}">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span></button>
-                          <h4 class="modal-title">Activate User</h4>
+                  <a href="{% url 'editUser' id=users.id %}"><div><i class="fa fa-pencil text-yellow"></i> edit</div></a>
+                  {% if users.username != user.username %}
+                  {% if users.is_active == True %}
+                    <a href="" data-toggle="modal" data-target="#modalDeactivate{{ users.id }}"><i class="fa fa-ban text-red"></i> deactivate</a>
+                    <!-- modal -->
+                    <div class="modal fade" id="modalDeactivate{{ users.id }}">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title"><i class="fa fa-warning text-red"></i> Deactivate User</h4>
+                          </div>
+                          <div class="modal-body">
+                            <p>Are you sure want to deactivate user "{{ users.username }}"?</p>
+                          </div>
+                          <div class="modal-footer">
+                            <p>Superuser only</p>
+                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                            <a href="{% url 'deactivateUser' id=users.id %}"><button type="submit" class="btn btn-danger">deactivate</button></a>
+                          </div>
                         </div>
-                        <div class="modal-body">
-                          <p>Are you sure want to activate user "{{ user.username }}"?</p>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
-                          <a href="{% url 'activateUser' id=user.id %}"><button type="submit" class="btn btn-success">Activate</button></a>
-                        </div>
+                        <!-- /.modal-content -->
                       </div>
-                      <!-- /.modal-content -->
+                      <!-- /.modal-dialog -->
                     </div>
-                    <!-- /.modal-dialog -->
-                  </div>
-                  <!-- /.modal -->
+                    <!-- /.modal -->
+                  {% else %}
+                    <a href="" data-toggle="modal" data-target="#modalActivate{{ users.id }}"><i class="fa fa-check text-green"></i> activate</a>
+                    <!-- modal -->
+                    <div class="modal fade" id="modalActivate{{ users.id }}">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Activate User</h4>
+                          </div>
+                          <div class="modal-body">
+                            <p>Are you sure want to activate user "{{ users.username }}"?</p>
+                          </div>
+                          <div class="modal-footer">
+                            <p>Superuser only</p>
+                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                            <a href="{% url 'activateUser' id=users.id %}"><button type="submit" class="btn btn-success">Activate</button></a>
+                          </div>
+                        </div>
+                        <!-- /.modal-content -->
+                      </div>
+                      <!-- /.modal-dialog -->
+                    </div>
+                    <!-- /.modal -->
+                  {% endif %}
+                  {% endif %}
                 {% endif %}
               </td>
             </tr>
