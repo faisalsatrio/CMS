@@ -253,7 +253,7 @@ def deleteCrawler(request, id):
 
 	k8s_beta = client.ExtensionsV1beta1Api()
 	body = kubernetes.client.V1DeleteOptions()
-	body.propagation_policy='Foreground'
+	body.propagation_policy = 'Foreground'
 	resp = k8s_beta.delete_namespaced_deployment(name="crawler-"+subject.platform.platform_name+"-"+subject.topic.topic_name+"-"+subject.subject, namespace="staging", body=body)
 	print("Deployment deleted. status='%s'" % str(resp.status))
 	return redirect('deactivateSubject', id)

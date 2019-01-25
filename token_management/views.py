@@ -39,6 +39,7 @@ def editToken(request, id):
 	}
 
 	if(request.method == "POST"):
+		unsubmitToken(request, token.id)
 		tokenName = request.POST.get("tokenName")
 		consumerKey = request.POST.get("consumerKey")
 		consumerSecret = request.POST.get("consumerSecret")
@@ -53,6 +54,7 @@ def editToken(request, id):
 @login_required(login_url='login')
 def deleteToken(request, id):
 	token = get_object_or_404(Token, id=id)
+	unsubmitToken(request, token.id)
 	token.delete()
 	return redirect('listToken')
 
@@ -73,3 +75,15 @@ def submitToken(request, id):
 
 	resp = k8s_beta.create_namespaced_secret(body=body, namespace="staging")
 	print("Secret created. status='%s'" % str(resp))
+
+def unsubmitToken(request, id):
+	token = get_object_or_404(Token, id=id)
+
+	config.load_kube_config()
+	k8s_beta = client.CoreV1Api()
+
+	body = kubernetes.client.V1Secret()
+	body.metadata = kubernetes.client.V1ObjectMeta(name=token.token_name)
+
+	resp = k8s_beta.delete_namespaced_secret(name=token.token_name, body=body, namespace="staging")
+	print("Secret deleted. status='%s'" % str(resp))
