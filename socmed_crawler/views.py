@@ -12,6 +12,7 @@ from os import path
 import yaml
 from kubernetes import client, config
 import kubernetes
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -88,8 +89,13 @@ def addSubject(request):
 		deployYamlUrl = fs.url(deployYaml.name)
 		subjectWithId = Subject.objects.create(topic=topic, subject=subject, keyword=keyword, platform=platform, status=status, start_time=startTime, config_yaml_name=configYamlName, config_yaml_url=configYamlUrl, deploy_yaml_name=deployYamlName, deploy_yaml_url=deployYamlUrl, token=token)
 
-		activateSubject(request, subjectWithId.id)
-		return redirect('index')
+		try:
+			activateSubject(request, subjectWithId.id)
+		except:
+			messages.error(request, 'There is something wrong with Kubernetes when running a job')
+			deactivateSubject(request, subjectWithId.id)
+		finally:
+			return redirect('index')
 	else :
 		return render(request, 'addSubject.html', response)
 
@@ -166,8 +172,13 @@ def editSubject(request, id):
 		deployYamlUrl = fs.url(deployYaml.name)
 		Subject.objects.filter(id=id).update(topic=topic, subject=subject, keyword=keyword, platform=platform, status=status, start_time=startTime, end_time=endTime, config_yaml_name=configYamlName, config_yaml_url=configYamlUrl, deploy_yaml_name=deployYamlName, deploy_yaml_url=deployYamlUrl, token=token)
 
-		activateSubject(request, subjectWithId.id)
-		return redirect('index')
+		try:
+			activateSubject(request, subjectWithId.id)
+		except:
+			messages.error(request, 'There is something wrong with Kubernetes when running a job')
+			deactivateSubject(request, subjectWithId.id)
+		finally:
+			return redirect('index')
 	else :
 		return render(request, 'editSubject.html', response)
 
@@ -175,9 +186,12 @@ def editSubject(request, id):
 def deleteSubject(request, id):
 	subject = get_object_or_404(Subject, id=id)
 	fs = FileSystemStorage()
-	fs.delete(subject.config_yaml_name)
-	fs.delete(subject.deploy_yaml_name)
-	subject.delete()
+	try:
+		fs.delete(subject.config_yaml_name)
+		fs.delete(subject.deploy_yaml_name)
+		subject.delete()
+	except:
+		messages.error(request, 'There is something wrong when deleting a job')
 	return redirect('index')
 
 @login_required(login_url='login')

@@ -142,6 +142,17 @@
       <a href="/subject/add"><button type="button" class="btn btn-success pull-right">Add Subject</button></a>
       <br>
       <br></br>
+      <!-- Error message -->
+      <div>
+        {% if messages %}
+        {% for message in messages %}
+        <div class="" role="alert">
+          <center>{{ message }}</center>
+        </div>
+        {% endfor %}
+        {% endif %}
+      </div>
+      <!-- /.Error message -->
       <div class="box">
         <div class="box-body">
           <table id="table1" class="table table-bordered table-striped table-hover">

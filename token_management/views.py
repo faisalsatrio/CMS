@@ -3,6 +3,7 @@ from .models import Token
 from django.http import HttpResponse, HttpResponseRedirect
 from kubernetes import client, config
 import kubernetes
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -25,7 +26,11 @@ def addToken(request):
 		listSubject = ""
 		countSubject = 0
 		token = Token.objects.create(token_name=tokenName, consumer_key=consumerKey, consumer_secret=consumerSecret, access_key=accessKey, access_secret=accessSecret, list_subject=listSubject, count_subject=countSubject)
-		submitToken(request, token.id)
+		try:
+			submitToken(request, token.id)
+		except:
+			Token.objects.filter(id=token.id).delete()
+			messages.error(request, 'There is something wrong with Kubernetes when adding a token')
 		return redirect('listToken')
 	else :
 		return render(request, 'addToken.html')
@@ -39,14 +44,17 @@ def editToken(request, id):
 	}
 
 	if(request.method == "POST"):
-		unsubmitToken(request, token.id)
-		tokenName = request.POST.get("tokenName")
-		consumerKey = request.POST.get("consumerKey")
-		consumerSecret = request.POST.get("consumerSecret")
-		accessKey = request.POST.get("accessKey")
-		accessSecret = request.POST.get("accessSecret")
-		token = Token.objects.filter(id=id).update(token_name=tokenName, consumer_key=consumerKey, consumer_secret=consumerSecret, access_key=accessKey, access_secret=accessSecret)
-		submitToken(request, token.id)
+		try:
+			unsubmitToken(request, id)
+			tokenName = request.POST.get("tokenName")
+			consumerKey = request.POST.get("consumerKey")
+			consumerSecret = request.POST.get("consumerSecret")
+			accessKey = request.POST.get("accessKey")
+			accessSecret = request.POST.get("accessSecret")
+			token = Token.objects.filter(id=id).update(token_name=tokenName, consumer_key=consumerKey, consumer_secret=consumerSecret, access_key=accessKey, access_secret=accessSecret)
+			submitToken(request, id)
+		except:
+			messages.error(request, 'There is something wrong with Kubernetes when editing a token')
 		return redirect('listToken')
 	else :
 		return render(request, 'editToken.html', response)
@@ -54,8 +62,11 @@ def editToken(request, id):
 @login_required(login_url='login')
 def deleteToken(request, id):
 	token = get_object_or_404(Token, id=id)
-	unsubmitToken(request, token.id)
-	token.delete()
+	try:
+		unsubmitToken(request, id)
+		token.delete()
+	except:
+		messages.error(request, 'There is something wrong with Kubernetes when deleting a token')
 	return redirect('listToken')
 
 def submitToken(request, id):
